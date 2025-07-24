@@ -9,12 +9,20 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { mockPromotions, mockCategories, mockProducts } from "@/data/mockData"
+import Footer from "@/components/common/Footer"
 
 export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState("")
 
+  const promotionDesigns = [
+    { gradient: "from-purple-600 via-pink-600 to-red-600", pattern: "diagonal-stripes" },
+    { gradient: "from-blue-600 via-cyan-500 to-teal-500", pattern: "dots" },
+    { gradient: "from-orange-500 via-red-500 to-pink-500", pattern: "waves" },
+    { gradient: "from-green-500 via-emerald-500 to-teal-600", pattern: "geometric" },
+  ]
+
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       {/* Fixed Search Bar */}
       <div className="sticky top-0 z-40 bg-white shadow-sm">
         <div className="px-4 py-4 sm:px-6">
@@ -25,7 +33,7 @@ export default function HomeScreen() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="¿Qué estás buscando?"
-                className="pl-10 pr-4 py-3 text-base rounded-full border-gray-200 focus:border-blue-500 focus:ring-blue-500 shadow-sm"
+                className="pl-10 pr-4 py-3 text-base rounded-full border-gray-200 focus:border-blue-500 focus:ring-blue-500 shadow-sm bg-white"
               />
             </div>
           </div>
@@ -33,37 +41,58 @@ export default function HomeScreen() {
       </div>
 
       {/* Content */}
-      <div className="pb-24">
+      <div className="pb-32">
         {/* Promotions Carousel */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="py-6 px-4"
+          className="py-6 px-4 sm:px-6"
         >
           <h2 className="text-xl font-bold mb-4 px-2">Promociones de la semana</h2>
-          <div className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2">
-            {mockPromotions.map((promo, index) => (
-              <motion.div
-                key={promo.id}
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="flex-shrink-0 w-80 snap-start"
-              >
-                <Card className="overflow-hidden shadow-lg border-0">
-                  <CardContent className="p-0 relative">
-                    <div className={`h-40 bg-gradient-to-br ${promo.color} relative`}>
-                      <div className="absolute inset-0 bg-black/20" />
-                      <div className="absolute bottom-4 left-4 right-4 text-white">
-                        <h3 className="font-bold text-xl mb-1">{promo.title}</h3>
-                        <p className="text-sm opacity-90">{promo.subtitle}</p>
+          <div className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2 md:flex-wrap md:justify-center">
+            {mockPromotions.map((promo, index) => {
+              const design = promotionDesigns[index % promotionDesigns.length]
+              return (
+                <motion.div
+                  key={promo.id}
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="flex-shrink-0 w-80 snap-start md:w-72"
+                >
+                  <Card className="overflow-hidden shadow-lg border-0 hover:shadow-xl transition-shadow">
+                    <CardContent className="p-0 relative">
+                      <div className={`h-40 bg-gradient-to-br ${design.gradient} relative overflow-hidden`}>
+                        <div className="absolute inset-0 bg-black/20" />
+                        {/* Pattern overlay */}
+                        <div className="absolute inset-0 opacity-10">
+                          {design.pattern === "diagonal-stripes" && (
+                            <div className="w-full h-full bg-gradient-to-br from-transparent via-white to-transparent transform rotate-45" />
+                          )}
+                          {design.pattern === "dots" && (
+                            <div
+                              className="w-full h-full"
+                              style={{
+                                backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)",
+                                backgroundSize: "20px 20px",
+                              }}
+                            />
+                          )}
+                        </div>
+                        <div className="absolute bottom-4 left-4 right-4 text-white">
+                          <Badge className="mb-2 bg-white/20 text-white border-white/30 backdrop-blur-sm">
+                            {index === 0 ? "70% OFF" : index === 1 ? "NUEVO" : index === 2 ? "HOT" : "ESPECIAL"}
+                          </Badge>
+                          <h3 className="font-bold text-xl mb-1">{promo.title}</h3>
+                          <p className="text-sm opacity-90">{promo.subtitle}</p>
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              )
+            })}
           </div>
         </motion.div>
 
@@ -72,30 +101,34 @@ export default function HomeScreen() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="py-6 px-4"
+          className="py-6 px-4 sm:px-6"
         >
           <h2 className="text-xl font-bold mb-4 px-2">Categorías destacadas</h2>
           <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-2">
-            {mockCategories.slice(0, 16).map((category, index) => (
-              <motion.div
-                key={category.id}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{ scale: 1.05 }}
-                className="flex-shrink-0"
-              >
-                <Button
-                  variant="outline"
-                  className="flex flex-col items-center gap-2 h-auto p-4 min-w-[100px] rounded-2xl bg-white hover:bg-gray-50 border-gray-200"
-                >
-                  <span className="text-2xl">{category.icon}</span>
-                  <span className="text-xs font-medium text-center">{category.name}</span>
-                  <Badge variant="secondary" className="text-xs">
-                    {category.count}
-                  </Badge>
-                </Button>
-              </motion.div>
+            {Array.from({ length: Math.ceil(mockCategories.length / 4) }, (_, groupIndex) => (
+              <div key={groupIndex} className="flex-shrink-0 grid grid-cols-2 gap-3 w-48">
+                {mockCategories.slice(groupIndex * 4, (groupIndex + 1) * 4).map((category, index) => (
+                  <motion.div
+                    key={category.id}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: index * 0.05 }}
+                    whileHover={{ scale: 1.02 }}
+                    className="flex-shrink-0"
+                  >
+                    <Button
+                      variant="outline"
+                      className="flex flex-col items-center gap-2 h-auto p-3 w-full rounded-2xl bg-white hover:bg-gray-50 border-gray-200 hover:shadow-sm transition-all"
+                    >
+                      <span className="text-xl">{category.icon}</span>
+                      <span className="text-xs font-medium text-center leading-tight">{category.name}</span>
+                      <Badge variant="secondary" className="text-xs">
+                        {category.count}
+                      </Badge>
+                    </Button>
+                  </motion.div>
+                ))}
+              </div>
             ))}
           </div>
         </motion.div>
@@ -105,12 +138,12 @@ export default function HomeScreen() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="py-6 px-4"
+          className="py-6 px-4 sm:px-6"
         >
           <div className="flex items-center justify-between mb-4 px-2">
             <div>
-              <h2 className="text-xl font-bold">Productos cercanos</h2>
-              <p className="text-sm text-gray-600">Basado en tus intereses</p>
+              <h2 className="text-xl font-bold">Productos destacados</h2>
+              <p className="text-sm text-gray-600">Los más populares cerca de ti</p>
             </div>
             <Button variant="ghost" size="sm" className="text-blue-600">
               Ver todos
@@ -124,9 +157,9 @@ export default function HomeScreen() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.01 }}
               >
-                <Card className="overflow-hidden shadow-sm border border-gray-100">
+                <Card className="overflow-hidden shadow-md border border-gray-100 bg-gradient-to-r from-blue-50/30 to-purple-50/30 hover:shadow-lg transition-all">
                   <CardContent className="p-4">
                     <div className="flex gap-4">
                       <div className="relative flex-shrink-0">
@@ -172,6 +205,8 @@ export default function HomeScreen() {
           </div>
         </motion.div>
       </div>
+
+      <Footer />
     </div>
   )
 }

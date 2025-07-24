@@ -5,12 +5,16 @@ import { motion } from "framer-motion"
 import { ArrowLeft, Send } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
 import { mockConversations, mockMessages } from "@/data/mockData"
+import Footer from "@/components/common/Footer"
 
 export default function MessagesScreen() {
   const [selectedConversation, setSelectedConversation] = useState<number | null>(null)
   const [newMessage, setNewMessage] = useState("")
   const [messages, setMessages] = useState(mockMessages)
+  const [filter, setFilter] = useState("all")
+  const [conversations, setConversations] = useState(mockConversations)
 
   const handleSendMessage = () => {
     if (!newMessage.trim()) return
@@ -37,6 +41,19 @@ export default function MessagesScreen() {
     }, 1000)
   }
 
+  const filteredConversations = conversations.filter((conv) => {
+    switch (filter) {
+      case "unread":
+        return conv.unread
+      case "newest":
+        return conv.time === "10:30" || conv.time === "09:15"
+      case "oldest":
+        return conv.time === "Ayer"
+      default:
+        return true
+    }
+  })
+
   if (selectedConversation !== null) {
     return (
       <div className="h-screen bg-white flex flex-col">
@@ -47,12 +64,12 @@ export default function MessagesScreen() {
           </Button>
           <div className="flex items-center gap-3">
             <img
-              src={mockConversations[selectedConversation].avatar || "/placeholder.svg"}
+              src={conversations[selectedConversation].avatar || "/placeholder.svg"}
               alt=""
               className="w-10 h-10 rounded-full"
             />
             <div>
-              <h3 className="font-medium">{mockConversations[selectedConversation].name}</h3>
+              <h3 className="font-medium">{conversations[selectedConversation].name}</h3>
               <p className="text-sm text-gray-500">En línea</p>
             </div>
           </div>
@@ -82,14 +99,14 @@ export default function MessagesScreen() {
         </div>
 
         {/* Message Input */}
-        <div className="border-t p-4 pb-24">
+        <div className="border-t p-4 pb-32">
           <div className="flex gap-2">
             <Input
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               placeholder="Escribe un mensaje..."
               onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-              className="flex-1"
+              className="flex-1 bg-white"
             />
             <Button onClick={handleSendMessage} size="sm">
               <Send className="w-4 h-4" />
@@ -101,18 +118,34 @@ export default function MessagesScreen() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="px-4 py-6 pb-24">
-        <h1 className="text-2xl font-bold mb-6">Mensajes</h1>
+    <div className="min-h-screen bg-gray-50">
+      <div className="px-4 sm:px-6 py-6 pb-32">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold">Mensajes</h1>
+          <div className="flex gap-2">
+            <Button variant={filter === "all" ? "default" : "outline"} size="sm" onClick={() => setFilter("all")}>
+              Todos
+            </Button>
+            <Button variant={filter === "unread" ? "default" : "outline"} size="sm" onClick={() => setFilter("unread")}>
+              No leídos
+            </Button>
+            <Button variant={filter === "newest" ? "default" : "outline"} size="sm" onClick={() => setFilter("newest")}>
+              Nuevos
+            </Button>
+            <Button variant={filter === "oldest" ? "default" : "outline"} size="sm" onClick={() => setFilter("oldest")}>
+              Antiguos
+            </Button>
+          </div>
+        </div>
 
         <div className="space-y-2">
-          {mockConversations.map((conversation, index) => (
+          {filteredConversations.map((conversation, index) => (
             <motion.div
               key={conversation.id}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="p-4 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
+              className="p-4 bg-white border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
               onClick={() => setSelectedConversation(index)}
             >
               <div className="flex items-center gap-3">
@@ -120,16 +153,20 @@ export default function MessagesScreen() {
                 <div className="flex-1">
                   <div className="flex justify-between items-start">
                     <h3 className="font-medium">{conversation.name}</h3>
-                    <span className="text-xs text-gray-500">{conversation.time}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-500">{conversation.time}</span>
+                      {conversation.unread && <Badge className="bg-blue-500 text-white">Nuevo</Badge>}
+                    </div>
                   </div>
                   <p className="text-sm text-gray-600 truncate">{conversation.lastMessage}</p>
                 </div>
-                {conversation.unread && <div className="w-2 h-2 bg-blue-500 rounded-full"></div>}
               </div>
             </motion.div>
           ))}
         </div>
       </div>
+
+      <Footer />
     </div>
   )
 }

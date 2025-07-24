@@ -2,21 +2,46 @@
 
 import { useState, useRef } from "react"
 import { motion } from "framer-motion"
-import { Search, MapPin, Star } from "lucide-react"
+import { Search, MapPin, Star, SlidersHorizontal } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { mockProducts } from "@/data/mockData"
+import Footer from "@/components/common/Footer"
 
 export default function MapScreen() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedProduct, setSelectedProduct] = useState(mockProducts[0])
   const [isBottomSheetExpanded, setIsBottomSheetExpanded] = useState(false)
+  const [sortBy, setSortBy] = useState("relevance")
+  const [filteredProducts, setFilteredProducts] = useState(mockProducts)
   const constraintsRef = useRef(null)
+
+  const handleSort = (criteria: string) => {
+    setSortBy(criteria)
+    const sorted = [...mockProducts]
+
+    switch (criteria) {
+      case "distance":
+        sorted.sort((a, b) => Number.parseFloat(a.distance) - Number.parseFloat(b.distance))
+        break
+      case "price":
+        sorted.sort((a, b) => a.price - b.price)
+        break
+      case "relevance":
+      default:
+        sorted.sort((a, b) => b.rating - a.rating)
+        break
+    }
+
+    setFilteredProducts(sorted)
+  }
 
   return (
     <div className="h-screen bg-white relative overflow-hidden">
       {/* Fixed Search Bar */}
-      <div className="absolute top-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-sm">
+      <div className="absolute top-0 left-0 right-0 z-40 bg-white shadow-sm">
         <div className="px-4 py-4 sm:px-6">
           <div className="flex gap-3">
             <div className="relative flex-1">
@@ -25,7 +50,7 @@ export default function MapScreen() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Buscar en el mapa..."
-                className="pl-10 pr-4 py-3 text-base rounded-full border-gray-200 focus:border-blue-500 focus:ring-blue-500 shadow-sm"
+                className="pl-10 pr-4 py-3 text-base rounded-full border-gray-200 focus:border-blue-500 focus:ring-blue-500 shadow-sm bg-white"
               />
             </div>
           </div>
@@ -37,9 +62,34 @@ export default function MapScreen() {
         {/* Left Panel - Products List */}
         <div className="w-1/2 bg-white border-r overflow-y-auto">
           <div className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Productos cercanos</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold">Productos cercanos</h2>
+              <div className="flex gap-2">
+                <Button
+                  variant={sortBy === "relevance" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => handleSort("relevance")}
+                >
+                  Relevancia
+                </Button>
+                <Button
+                  variant={sortBy === "distance" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => handleSort("distance")}
+                >
+                  Cercanía
+                </Button>
+                <Button
+                  variant={sortBy === "price" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => handleSort("price")}
+                >
+                  Precio
+                </Button>
+              </div>
+            </div>
             <div className="space-y-4">
-              {mockProducts.map((product) => (
+              {filteredProducts.map((product) => (
                 <motion.div
                   key={product.id}
                   className="p-4 border rounded-lg cursor-pointer hover:shadow-md transition-shadow"
@@ -85,11 +135,11 @@ export default function MapScreen() {
           </div>
         </div>
 
-        {/* Bottom Sheet */}
+        {/* Bottom Sheet - Ajustado para Safari */}
         <motion.div
           className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-2xl"
-          initial={{ y: "80%" }}
-          animate={{ y: isBottomSheetExpanded ? "20%" : "80%" }}
+          initial={{ y: "75%" }}
+          animate={{ y: isBottomSheetExpanded ? "15%" : "75%" }}
           transition={{ type: "spring", damping: 30, stiffness: 300 }}
           drag="y"
           dragConstraints={{ top: 0, bottom: 0 }}
@@ -100,17 +150,47 @@ export default function MapScreen() {
               setIsBottomSheetExpanded(true)
             }
           }}
+          style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
         >
-          <div className="p-4">
+          <div className="p-4 pb-8">
             {/* Drag Handle */}
             <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mb-4" />
+
+            {/* Filter Buttons */}
+            <div className="flex gap-2 mb-4 overflow-x-auto">
+              <Button
+                variant={sortBy === "relevance" ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleSort("relevance")}
+                className="flex-shrink-0"
+              >
+                <SlidersHorizontal className="w-4 h-4 mr-1" />
+                Relevancia
+              </Button>
+              <Button
+                variant={sortBy === "distance" ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleSort("distance")}
+                className="flex-shrink-0"
+              >
+                Cercanía
+              </Button>
+              <Button
+                variant={sortBy === "price" ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleSort("price")}
+                className="flex-shrink-0"
+              >
+                Precio
+              </Button>
+            </div>
 
             {/* Product Info */}
             <div className="flex gap-4 mb-4">
               <img
                 src={selectedProduct.image || "/placeholder.svg"}
                 alt={selectedProduct.name}
-                className="w-16 h-16 rounded-lg object-cover"
+                className="w-20 h-20 rounded-lg object-cover"
               />
               <div className="flex-1">
                 <h3 className="font-semibold text-lg">{selectedProduct.name}</h3>
@@ -127,18 +207,33 @@ export default function MapScreen() {
             {isBottomSheetExpanded && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
                 <div>
-                  <h4 className="font-medium mb-2">Más productos similares</h4>
-                  <div className="flex gap-3 overflow-x-auto">
-                    {mockProducts.slice(1, 4).map((product) => (
-                      <Card key={product.id} className="flex-shrink-0 w-32">
-                        <CardContent className="p-2">
-                          <img
-                            src={product.image || "/placeholder.svg"}
-                            alt={product.name}
-                            className="w-full h-20 object-cover rounded mb-2"
-                          />
-                          <p className="text-xs font-medium truncate">{product.name}</p>
-                          <p className="text-xs text-blue-600">${product.price}</p>
+                  <h4 className="font-medium mb-3">Más productos similares</h4>
+                  <div className="space-y-3">
+                    {filteredProducts.slice(1, 4).map((product) => (
+                      <Card key={product.id} className="overflow-hidden">
+                        <CardContent className="p-3">
+                          <div className="flex gap-3">
+                            <img
+                              src={product.image || "/placeholder.svg"}
+                              alt={product.name}
+                              className="w-16 h-16 object-cover rounded-lg"
+                            />
+                            <div className="flex-1">
+                              <h4 className="font-medium text-sm">{product.name}</h4>
+                              <p className="text-xs text-gray-600 mb-1">{product.seller}</p>
+                              <div className="flex items-center gap-2 mb-1">
+                                <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                                <span className="text-xs">{product.rating}</span>
+                                <span className="text-xs text-gray-500">• {product.distance}</span>
+                              </div>
+                              <div className="flex items-center justify-between">
+                                <span className="text-sm font-bold text-blue-600">${product.price}</span>
+                                <Badge variant="secondary" className="text-xs">
+                                  {product.category}
+                                </Badge>
+                              </div>
+                            </div>
+                          </div>
                         </CardContent>
                       </Card>
                     ))}
@@ -149,6 +244,8 @@ export default function MapScreen() {
           </div>
         </motion.div>
       </div>
+
+      <Footer />
     </div>
   )
 }

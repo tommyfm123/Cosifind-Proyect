@@ -19,13 +19,13 @@ export default function FloatingNavigation({ activeScreen, onScreenChange }: Flo
   ]
 
   return (
-    <motion.div
-      initial={{ y: 100 }}
-      animate={{ y: 0 }}
-      className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 px-4 w-full max-w-sm"
-    >
-      <div className="bg-white/95 backdrop-blur-lg border border-gray-200/50 rounded-full px-4 py-3 shadow-2xl">
-        <div className="flex items-center justify-between">
+    <div className="fixed bottom-4 sm:bottom-6 left-0 right-0 z-50 flex justify-center px-4">
+      <motion.div
+        initial={{ y: 100 }}
+        animate={{ y: 0 }}
+        className="bg-white/95 backdrop-blur-lg border border-gray-200/50 rounded-full px-4 sm:px-6 py-3 sm:py-4 shadow-2xl"
+      >
+        <div className="flex items-center justify-center gap-2 sm:gap-4 md:gap-6">
           {navItems.map((item) => {
             const Icon = item.icon
             const isActive = activeScreen === item.id
@@ -37,21 +37,21 @@ export default function FloatingNavigation({ activeScreen, onScreenChange }: Flo
                 variant="ghost"
                 size="sm"
                 onClick={() => onScreenChange(item.id)}
-                className={`flex flex-col items-center gap-1 p-3 h-auto transition-all duration-300 rounded-full ${
+                className={`flex flex-col items-center justify-center gap-1 transition-all duration-300 ${
                   isCenter
-                    ? "bg-blue-500 text-white hover:bg-blue-600 scale-110"
+                    ? "bg-blue-500 text-white hover:bg-blue-600 rounded-full w-12 h-12 sm:w-14 sm:h-14 p-0"
                     : isActive
-                      ? "text-blue-600 bg-blue-50"
-                      : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+                      ? "text-blue-600 rounded-lg p-2 sm:p-3"
+                      : "text-gray-500 hover:text-gray-700 rounded-lg p-2 sm:p-3"
                 }`}
               >
-                <Icon className={`w-5 h-5 ${isActive && !isCenter ? "animate-bounce" : ""}`} />
-                <span className="text-xs font-medium hidden sm:block">{item.label}</span>
+                <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${isCenter ? "" : ""}`} />
+                {!isCenter && <span className="text-[10px] sm:text-xs font-medium hidden sm:block">{item.label}</span>}
               </Button>
             )
           })}
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   )
 }
