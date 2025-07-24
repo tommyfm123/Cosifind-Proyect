@@ -56,7 +56,7 @@ export default function MessagesScreen() {
 
   if (selectedConversation !== null) {
     return (
-      <div className="h-screen bg-white flex flex-col">
+      <div className="min-h-screen bg-white flex flex-col">
         {/* Chat Header */}
         <div className="bg-white border-b px-4 py-4 flex items-center gap-3">
           <Button variant="ghost" size="sm" onClick={() => setSelectedConversation(null)}>
@@ -76,7 +76,7 @@ export default function MessagesScreen() {
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[60vh]">
           {messages.map((message) => (
             <motion.div
               key={message.id}
@@ -120,22 +120,22 @@ export default function MessagesScreen() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="px-4 sm:px-6 py-6 pb-32">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold">Mensajes</h1>
-          <div className="flex gap-2">
-            <Button variant={filter === "all" ? "default" : "outline"} size="sm" onClick={() => setFilter("all")}>
-              Todos
-            </Button>
-            <Button variant={filter === "unread" ? "default" : "outline"} size="sm" onClick={() => setFilter("unread")}>
-              No leídos
-            </Button>
-            <Button variant={filter === "newest" ? "default" : "outline"} size="sm" onClick={() => setFilter("newest")}>
-              Nuevos
-            </Button>
-            <Button variant={filter === "oldest" ? "default" : "outline"} size="sm" onClick={() => setFilter("oldest")}>
-              Antiguos
-            </Button>
-          </div>
+        <h1 className="text-2xl font-bold mb-4">Mensajes</h1>
+
+        {/* Filters */}
+        <div className="flex gap-2 mb-6 overflow-x-auto">
+          <Button variant={filter === "all" ? "default" : "outline"} size="sm" onClick={() => setFilter("all")}>
+            Todos
+          </Button>
+          <Button variant={filter === "unread" ? "default" : "outline"} size="sm" onClick={() => setFilter("unread")}>
+            No leídos
+          </Button>
+          <Button variant={filter === "newest" ? "default" : "outline"} size="sm" onClick={() => setFilter("newest")}>
+            Nuevos
+          </Button>
+          <Button variant={filter === "oldest" ? "default" : "outline"} size="sm" onClick={() => setFilter("oldest")}>
+            Antiguos
+          </Button>
         </div>
 
         <div className="space-y-2">

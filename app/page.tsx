@@ -171,6 +171,10 @@ export default function App() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [isLoading])
 
+  const handleNavigateHome = () => {
+    setActiveScreen("home")
+  }
+
   const renderScreen = () => {
     switch (activeScreen) {
       case "home":
@@ -352,7 +356,7 @@ export default function App() {
           </div>
         )
       case "map":
-        return <MapScreen />
+        return <MapScreen onNavigateHome={handleNavigateHome} />
       case "messages":
         return <MessagesScreen />
       case "profile":
@@ -378,7 +382,11 @@ export default function App() {
         </motion.div>
       </AnimatePresence>
 
-      <FloatingNavigation activeScreen={activeScreen} onScreenChange={setActiveScreen} />
+      <FloatingNavigation
+        activeScreen={activeScreen}
+        onScreenChange={setActiveScreen}
+        hideOnMap={activeScreen === "map"}
+      />
     </div>
   )
 }
