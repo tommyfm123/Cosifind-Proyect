@@ -87,7 +87,7 @@ export default function MapScreen({ onNavigateHome }: MapScreenProps) {
 
         {/* Logo */}
         <div className="bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm">
-          <span className="text-sm font-bold text-blue-600">LocalMarket</span>
+          <span className="text-sm font-bold text-blue-600">Cosifind</span>
         </div>
       </div>
 
@@ -219,9 +219,8 @@ export default function MapScreen({ onNavigateHome }: MapScreenProps) {
                             className="absolute top-0 right-0 bg-white/90 backdrop-blur-sm rounded-full p-2 w-8 h-8 hover:bg-white shadow-sm z-10"
                           >
                             <Heart
-                              className={`w-3 h-3 ${
-                                isFavorite(product.id) ? "text-red-500 fill-red-500" : "text-gray-400"
-                              }`}
+                              className={`w-3 h-3 ${isFavorite(product.id) ? "text-red-500 fill-red-500" : "text-gray-400"
+                                }`}
                             />
                           </Button>
                           <img

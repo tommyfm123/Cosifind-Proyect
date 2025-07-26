@@ -1,19 +1,18 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Search, MapPin, Star, Truck } from "lucide-react"
-import { Input } from "@/components/ui/input"
+import { MapPin, Star, Truck } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import HomeScreen from "@/components/screens/HomeScreen"
 import MapScreen from "@/components/screens/MapScreen"
 import MessagesScreen from "@/components/screens/MessagesScreen"
 import ProfileScreen from "@/components/screens/ProfileScreen"
 import FavoritesScreen from "@/components/screens/FavoritesScreen"
 import FloatingNavigation from "@/components/navigation/FloatingNavigation"
+import Header from "@/components/common/Header"
 
 // Datos de ejemplo para promociones estilo Amazon
 const promotions = [
@@ -145,34 +144,21 @@ const featuredProducts = [
 
 export default function App() {
   const [activeScreen, setActiveScreen] = useState("home")
-  const [searchQuery, setSearchQuery] = useState("")
-  const [visibleProducts, setVisibleProducts] = useState(4)
-  const [isLoading, setIsLoading] = useState(false)
-
-  // Simular carga de más productos
-  const loadMoreProducts = () => {
-    if (isLoading) return
-    setIsLoading(true)
-    setTimeout(() => {
-      setVisibleProducts((prev) => prev + 4)
-      setIsLoading(false)
-    }, 1000)
-  }
-
-  // Detectar scroll para cargar más productos
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 1000) {
-        loadMoreProducts()
-      }
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [isLoading])
+  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined)
 
   const handleNavigateHome = () => {
     setActiveScreen("home")
+    setSelectedCategory(undefined)
+  }
+
+  const handleNavigateToMap = (category?: string) => {
+    setSelectedCategory(category)
+    setActiveScreen("map")
+  }
+
+  const handleShowAllProducts = () => {
+    setSelectedCategory(undefined)
+    setActiveScreen("map")
   }
 
   const renderScreen = () => {
@@ -181,19 +167,7 @@ export default function App() {
         return (
           <div className="min-h-screen bg-[#F8FAFC] pb-24 sm:pb-32">
             {/* Header con Search Bar */}
-            <div className="bg-[#1B8FF] shadow-lg sticky top-0 z-40">
-              <div className="px-4 py-4 sm:px-6 sm:py-6">
-                <div className="relative">
-                  <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
-                  <Input
-                    placeholder="Buscar productos, marcas y más..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 sm:pl-12 pr-4 sm:pr-6 py-3 sm:py-4 text-sm sm:text-base rounded-lg sm:rounded-xl border-0 bg-white shadow-sm focus:ring-2 focus:ring-white/20 focus:border-transparent"
-                  />
-                </div>
-              </div>
-            </div>
+            <Header activeScreen="home" />
 
             {/* Carrusel de Promociones */}
             <div className="py-4 sm:py-6 md:py-8 px-4 sm:px-6">
@@ -211,13 +185,14 @@ export default function App() {
                           <Badge className="mb-2 sm:mb-3 bg-white/20 text-white border-white/30 backdrop-blur-sm text-xs sm:text-sm">
                             {promo.discount}
                           </Badge>
-                          <h3 className="font-bold text-lg sm:text-xl text-white mb-1">{promo.title}</h3>
+                          <h3 className="font-bold text-[#2D3844] text-lg sm:text-xl text-white mb-1">{promo.title}</h3>
                           <p className="text-xs sm:text-sm text-white/90">{promo.subtitle}</p>
                         </div>
                         <div className="absolute bottom-3 sm:bottom-4 right-3 sm:right-4">
                           <Button
                             size="sm"
                             className="bg-white text-gray-800 hover:bg-gray-100 text-xs sm:text-sm px-3 sm:px-4"
+                            onClick={() => handleNavigateToMap(promo.title)}
                           >
                             Ver ofertas
                           </Button>
@@ -249,11 +224,9 @@ export default function App() {
                         variant="ghost"
                         className={`h-auto p-2 sm:p-3 md:p-4 flex flex-col items-center gap-1 sm:gap-2 md:gap-3 rounded-xl sm:rounded-2xl hover:scale-105 transition-all duration-300 animate-in fade-in slide-in-from-bottom border ${category.color} bg-white shadow-sm hover:shadow-md min-h-[80px] sm:min-h-[90px] md:min-h-[100px]`}
                         style={{ animationDelay: `${(groupIndex * 8 + index) * 50}ms` }}
+                        onClick={() => handleNavigateToMap(category.name)}
                       >
-                      {(() => {
-                        const Icon = category.icon
-                        return <Icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
-                      })()}
+                        <span className="text-xl sm:text-2xl md:text-3xl">{category.icon}</span>
                         <span className="text-[10px] sm:text-xs md:text-sm font-semibold text-center leading-tight">
                           {category.name}
                         </span>
@@ -281,13 +254,18 @@ export default function App() {
                   <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#2D3844]">Productos destacados</h2>
                   <p className="text-sm sm:text-base text-gray-600 mt-1">Los más populares cerca de ti</p>
                 </div>
-                <Button variant="ghost" size="sm" className="text-[#1B8FF] hover:text-[#1B8FF]/80 text-xs sm:text-sm">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-[#1B8FF] hover:text-[#1B8FF]/80 text-xs sm:text-sm"
+                  onClick={handleShowAllProducts}
+                >
                   Ver todos
                 </Button>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-                {featuredProducts.slice(0, visibleProducts).map((product, index) => (
+                {featuredProducts.map((product, index) => (
                   <Card
                     key={product.id}
                     className="hover:shadow-xl transition-all duration-300 animate-in fade-in slide-in-from-bottom border-0 shadow-md bg-white"
@@ -348,48 +326,39 @@ export default function App() {
                   </Card>
                 ))}
               </div>
-
-              {/* Loading indicator */}
-              {isLoading && (
-                <div className="flex justify-center py-6 sm:py-8">
-                  <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-[#1B8FF]"></div>
-                </div>
-              )}
             </div>
           </div>
         )
       case "map":
-        return <MapScreen onNavigateHome={handleNavigateHome} />
+        return <MapScreen onNavigateHome={handleNavigateHome} selectedCategory={selectedCategory} />
       case "messages":
         return <MessagesScreen />
       case "profile":
         return <ProfileScreen />
       case "favorites":
         return <FavoritesScreen />
-      default:
-        return <HomeScreen />
     }
+
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeScreen}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            {renderScreen()}
+          </motion.div>
+        </AnimatePresence>
+
+        <FloatingNavigation
+          activeScreen={activeScreen}
+          onScreenChange={setActiveScreen}
+          hideOnMap={activeScreen === "map"}
+        />
+      </div>
+    )
   }
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeScreen}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
-        >
-          {renderScreen()}
-        </motion.div>
-      </AnimatePresence>
-
-      <FloatingNavigation
-        activeScreen={activeScreen}
-        onScreenChange={setActiveScreen}
-        hideOnMap={activeScreen === "map"}
-      />
-    </div>
-  )
 }
