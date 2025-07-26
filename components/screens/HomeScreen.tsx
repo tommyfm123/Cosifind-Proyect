@@ -2,17 +2,16 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Search, Star, MapPin, Truck, ChevronLeft, ChevronRight } from "lucide-react"
-import { Input } from "@/components/ui/input"
+import { Star, MapPin, Truck, ChevronLeft, ChevronRight } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { mockPromotions, mockCategories, mockProducts } from "@/data/mockData"
 import Footer from "@/components/common/Footer"
+import Header from "@/components/common/Header"
 
 export default function HomeScreen() {
-  const [searchQuery, setSearchQuery] = useState("")
   const [currentCategoryPage, setCurrentCategoryPage] = useState(0)
 
   const promotionColors = [
@@ -41,22 +40,7 @@ export default function HomeScreen() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Fixed Search Bar */}
-      <div className="sticky top-0 z-40 bg-white shadow-sm">
-        <div className="px-4 py-4 sm:px-6">
-          <div className="flex gap-3 max-w-md mx-auto sm:max-w-lg">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <Input
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="¿Qué estás buscando?"
-                className="pl-10 pr-4 py-3 text-base rounded-full border-gray-200 focus:border-blue-500 focus:ring-blue-500 shadow-sm bg-white"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      <Header />
 
       {/* Content */}
       <div className="pb-32">
@@ -137,7 +121,10 @@ export default function HomeScreen() {
                   variant="outline"
                   className="flex flex-col items-center gap-2 h-auto p-3 w-full rounded-2xl bg-white hover:bg-gray-50 border-gray-200 hover:shadow-sm transition-all"
                 >
-                  <span className="text-xl">{category.icon}</span>
+                  {(() => {
+                    const Icon = category.icon
+                    return <Icon className="w-5 h-5" />
+                  })()}
                   <span className="text-xs font-medium text-center leading-tight">{category.name}</span>
                   <Badge variant="secondary" className="text-xs">
                     {category.count}

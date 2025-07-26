@@ -2,52 +2,30 @@
 
 import { useState, useRef, useEffect } from "react"
 import { motion } from "framer-motion"
-import { Search, MapPin, Star, SlidersHorizontal, Heart, ArrowLeft, Eye, MessageCircle, Map } from "lucide-react"
-import { Input } from "@/components/ui/input"
+import { MapPin, Star, Heart, ArrowLeft, Eye, MessageCircle, Map } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { mockProducts } from "@/data/mockData"
+import Header from "@/components/common/Header"
+import Footer from "@/components/common/Footer"
 
 interface MapScreenProps {
   onNavigateHome?: () => void
 }
 
 export default function MapScreen({ onNavigateHome }: MapScreenProps) {
-  const [searchQuery, setSearchQuery] = useState("")
   const [selectedProduct, setSelectedProduct] = useState(mockProducts[0])
   const [isBottomSheetExpanded, setIsBottomSheetExpanded] = useState(false)
-  const [sortBy, setSortBy] = useState("relevance")
   const [filteredProducts, setFilteredProducts] = useState(mockProducts)
   const [favorites, setFavorites] = useState<number[]>([])
-  const [showFilters, setShowFilters] = useState(false)
   const [isProductModalOpen, setIsProductModalOpen] = useState(false)
   const [visibleProducts, setVisibleProducts] = useState(6)
   const [isLoading, setIsLoading] = useState(false)
   const constraintsRef = useRef(null)
   const bottomSheetRef = useRef<HTMLDivElement>(null)
 
-  const handleSort = (criteria: string) => {
-    setSortBy(criteria)
-    const sorted = [...mockProducts]
-
-    switch (criteria) {
-      case "distance":
-        sorted.sort((a, b) => Number.parseFloat(a.distance) - Number.parseFloat(b.distance))
-        break
-      case "price":
-        sorted.sort((a, b) => a.price - b.price)
-        break
-      case "relevance":
-      default:
-        sorted.sort((a, b) => b.rating - a.rating)
-        break
-    }
-
-    setFilteredProducts(sorted)
-    setShowFilters(false)
-  }
 
   const toggleFavorite = (productId: number) => {
     setFavorites((prev) => (prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId]))
@@ -113,63 +91,7 @@ export default function MapScreen({ onNavigateHome }: MapScreenProps) {
         </div>
       </div>
 
-      {/* Fixed Search Bar with Background */}
-      <div className="absolute top-16 lg:top-4 left-4 right-4 z-40">
-        <div className="bg-white/95 backdrop-blur-lg rounded-2xl p-4 shadow-lg border border-gray-200/50">
-          <div className="flex gap-3 max-w-md mx-auto lg:max-w-none">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <Input
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Buscar en el mapa..."
-                className="pl-10 pr-4 py-3 text-base rounded-full border-gray-200 focus:border-blue-500 focus:ring-blue-500 shadow-sm bg-white"
-              />
-            </div>
-            <Button
-              variant="outline"
-              onClick={() => setShowFilters(!showFilters)}
-              className="rounded-full px-4 bg-white shadow-sm"
-            >
-              <SlidersHorizontal className="w-5 h-5" />
-            </Button>
-          </div>
-
-          {/* Filters Menu */}
-          {showFilters && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-4 bg-white rounded-2xl shadow-lg border p-4"
-            >
-              <h3 className="font-medium mb-3">Ordenar por:</h3>
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  variant={sortBy === "relevance" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => handleSort("relevance")}
-                >
-                  Relevancia
-                </Button>
-                <Button
-                  variant={sortBy === "distance" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => handleSort("distance")}
-                >
-                  Cercanía
-                </Button>
-                <Button
-                  variant={sortBy === "price" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => handleSort("price")}
-                >
-                  Precio
-                </Button>
-              </div>
-            </motion.div>
-          )}
-        </div>
-      </div>
+      <Header />
 
       {/* Desktop Layout */}
       <div className="hidden lg:flex h-full pt-32">
@@ -227,23 +149,25 @@ export default function MapScreen({ onNavigateHome }: MapScreenProps) {
         </div>
 
         {/* Right Panel - Map */}
-        <div className="w-1/2 bg-gray-100 flex items-center justify-center">
-          <div className="text-center">
-            <MapPin className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-600 mb-2">Mapa Interactivo</h3>
-            <p className="text-gray-500">Aquí se mostraría el mapa con los productos</p>
-          </div>
+        <div className="w-1/2">
+          <iframe
+            src="https://maps.google.com/maps?q=Tucuman%2C%20Argentina&z=13&output=embed"
+            className="w-full h-full border-0"
+            loading="lazy"
+            allowFullScreen
+          ></iframe>
         </div>
       </div>
 
       {/* Mobile Layout */}
       <div className="lg:hidden h-full">
-        <div className="h-full pt-40 bg-gray-100 flex items-center justify-center" ref={constraintsRef}>
-          <div className="text-center">
-            <MapPin className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-600 mb-2">Mapa Interactivo</h3>
-            <p className="text-gray-500">Aquí se mostraría el mapa con los productos</p>
-          </div>
+        <div className="h-full pt-40" ref={constraintsRef}>
+          <iframe
+            src="https://maps.google.com/maps?q=Tucuman%2C%20Argentina&z=13&output=embed"
+            className="w-full h-full border-0"
+            loading="lazy"
+            allowFullScreen
+          ></iframe>
         </div>
 
         {/* Bottom Sheet - 70% map, 30% visible */}
@@ -410,6 +334,7 @@ export default function MapScreen({ onNavigateHome }: MapScreenProps) {
           )}
         </DialogContent>
       </Dialog>
+      <Footer />
     </div>
   )
 }
