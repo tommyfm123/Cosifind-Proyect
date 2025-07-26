@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { mockProducts } from "@/data/mockData"
 import Footer from "@/components/common/Footer"
+import Header from "@/components/common/Header"
 
 export default function FavoritesScreen() {
   const [favoriteProducts, setFavoriteProducts] = useState(mockProducts.slice(0, 6))
@@ -59,6 +60,7 @@ export default function FavoritesScreen() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Header />
       <div className="px-4 sm:px-6 py-6 pb-32">
         <div className="flex items-center gap-3 mb-6">
           <Heart className="w-6 h-6 text-red-500" />

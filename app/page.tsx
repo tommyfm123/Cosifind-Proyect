@@ -250,7 +250,10 @@ export default function App() {
                         className={`h-auto p-2 sm:p-3 md:p-4 flex flex-col items-center gap-1 sm:gap-2 md:gap-3 rounded-xl sm:rounded-2xl hover:scale-105 transition-all duration-300 animate-in fade-in slide-in-from-bottom border ${category.color} bg-white shadow-sm hover:shadow-md min-h-[80px] sm:min-h-[90px] md:min-h-[100px]`}
                         style={{ animationDelay: `${(groupIndex * 8 + index) * 50}ms` }}
                       >
-                        <span className="text-xl sm:text-2xl md:text-3xl">{category.icon}</span>
+                      {(() => {
+                        const Icon = category.icon
+                        return <Icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
+                      })()}
                         <span className="text-[10px] sm:text-xs md:text-sm font-semibold text-center leading-tight">
                           {category.name}
                         </span>
