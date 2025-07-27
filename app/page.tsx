@@ -185,7 +185,7 @@ export default function App() {
                           <Badge className="mb-2 sm:mb-3 bg-white/20 text-white border-white/30 backdrop-blur-sm text-xs sm:text-sm">
                             {promo.discount}
                           </Badge>
-                          <h3 className="font-bold text-[#2D3844] text-lg sm:text-xl text-white mb-1">{promo.title}</h3>
+                          <h3 className="font-bold text-white text-lg sm:text-xl mb-1">{promo.title}</h3>
                           <p className="text-xs sm:text-sm text-white/90">{promo.subtitle}</p>
                         </div>
                         <div className="absolute bottom-3 sm:bottom-4 right-3 sm:right-4">

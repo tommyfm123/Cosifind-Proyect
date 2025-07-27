@@ -13,6 +13,7 @@ import Footer from "@/components/common/Footer"
 
 interface MapScreenProps {
   onNavigateHome?: () => void
+  selectedCategory?: string
 }
 
 export default function MapScreen({ onNavigateHome }: MapScreenProps) {
@@ -90,8 +91,6 @@ export default function MapScreen({ onNavigateHome }: MapScreenProps) {
           <span className="text-sm font-bold text-blue-600">Cosifind</span>
         </div>
       </div>
-
-      <Header />
 
       {/* Desktop Layout */}
       <div className="hidden lg:flex h-full pt-32">
