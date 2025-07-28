@@ -14,39 +14,39 @@ import FavoritesScreen from "@/components/screens/FavoritesScreen"
 import FloatingNavigation from "@/components/navigation/FloatingNavigation"
 import Header from "@/components/common/Header"
 
-// Datos de ejemplo para promociones estilo Amazon
-const promotions = [
+import { AppleCardsCarousel, Card as AppleCard } from '@/components/ui/apple-cards-carousel';
+
+// Promociones estilo Apple
+const applePromotions = [
   {
-    id: 1,
-    title: "Ofertas del Día",
-    subtitle: "Hasta 70% de descuento",
-    image: "/placeholder.svg?height=200&width=400&text=Electronics+Sale",
-    discount: "70% OFF",
-    color: "from-blue-600 to-blue-800",
+    src: "/images/tech.jpg",
+    title: "Ofertas en Electrónica",
+    category: "Semana de descuentos",
+    content: <p>Aprovechá hasta 40% OFF en celulares, parlantes y más.</p>,
   },
   {
-    id: 2,
-    title: "Prime Day",
-    subtitle: "Envío gratis en millones de productos",
-    image: "/placeholder.svg?height=200&width=400&text=Prime+Day",
-    discount: "PRIME",
-    color: "from-orange-500 to-red-600",
+    src: "/images/gaming.jpg",
+    title: "Gaming Days",
+    category: "Promos Exclusivas",
+    content: <p>Descuentos en consolas, accesorios y videojuegos.</p>,
   },
   {
-    id: 3,
-    title: "Tecnología",
-    subtitle: "Los últimos gadgets",
-    image: "/placeholder.svg?height=200&width=400&text=Tech+Gadgets",
-    discount: "NUEVO",
-    color: "from-purple-600 to-indigo-700",
+    src: "/images/ropa.jpg",
+    title: "Top Moda",
+    category: "Tendencias",
+    content: <p>Remeras, zapatillas y más con envíos gratis.</p>,
   },
   {
-    id: 4,
-    title: "Hogar y Jardín",
-    subtitle: "Renueva tu espacio",
-    image: "/placeholder.svg?height=200&width=400&text=Home+Garden",
-    discount: "50% OFF",
-    color: "from-green-600 to-teal-700",
+    src: "/images/deco.jpg",
+    title: "Ofertas en Hogar",
+    category: "Equipá tu casa",
+    content: <p>Muebles, cocina y electro hasta 30% OFF.</p>,
+  },
+  {
+    src: "/images/school.jpg",
+    title: "Tecnología para el Estudio",
+    category: "Regreso a clases",
+    content: <p>Notebooks, tablets y más al mejor precio.</p>,
   },
 ]
 
@@ -94,7 +94,7 @@ const featuredProducts = [
     price: "$1,199.00",
     originalPrice: "$1,299.00",
     location: "Tienda Apple - 1.2km",
-    image: "/placeholder.svg?height=150&width=150&text=iPhone+15",
+    image: "/images/macbookm3.jpg",
     rating: 4.8,
     reviews: 2847,
     store: "Apple Store",
@@ -107,7 +107,7 @@ const featuredProducts = [
     price: "$1,099.00",
     originalPrice: "$1,199.00",
     location: "Best Buy - 0.8km",
-    image: "/placeholder.svg?height=150&width=150&text=MacBook+Air",
+    image: "/images/macbookm3.jpg",
     rating: 4.9,
     reviews: 1523,
     store: "Best Buy",
@@ -120,7 +120,7 @@ const featuredProducts = [
     price: "$349.99",
     originalPrice: "$399.99",
     location: "Sony Store - 2.1km",
-    image: "/placeholder.svg?height=150&width=150&text=Sony+Headphones",
+    image: "/images/macbookm3.jpg",
     rating: 4.7,
     reviews: 892,
     store: "Sony Store",
@@ -133,7 +133,7 @@ const featuredProducts = [
     price: "$899.99",
     originalPrice: "$1,199.99",
     location: "Samsung Plaza - 1.5km",
-    image: "/placeholder.svg?height=150&width=150&text=Samsung+TV",
+    image: "/images/macbookm3.jpg",
     rating: 4.6,
     reviews: 634,
     store: "Samsung Plaza",
@@ -169,49 +169,41 @@ export default function App() {
             {/* Header con Search Bar */}
             <Header activeScreen="home" />
 
-            {/* Carrusel de Promociones */}
-            <div className="py-4 sm:py-6 md:py-8 px-4 sm:px-6">
-              <div className="flex gap-3 sm:gap-4 md:gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory">
-                {promotions.map((promo, index) => (
-                  <Card
-                    key={promo.id}
-                    className="flex-shrink-0 w-72 sm:w-80 md:w-96 snap-start shadow-lg hover:shadow-xl transition-all duration-300 animate-in fade-in slide-in-from-left border-0 overflow-hidden"
-                    style={{ animationDelay: `${index * 100}ms` }}
-                  >
-                    <CardContent className="p-0 relative">
-                      <div className={`h-32 sm:h-36 md:h-40 bg-gradient-to-br ${promo.color} relative overflow-hidden`}>
-                        <div className="absolute inset-0 bg-black/10" />
-                        <div className="absolute top-3 sm:top-4 left-3 sm:left-4 right-3 sm:right-4">
-                          <Badge className="mb-2 sm:mb-3 bg-white/20 text-white border-white/30 backdrop-blur-sm text-xs sm:text-sm">
-                            {promo.discount}
-                          </Badge>
-                          <h3 className="font-bold text-white text-lg sm:text-xl mb-1">{promo.title}</h3>
-                          <p className="text-xs sm:text-sm text-white/90">{promo.subtitle}</p>
-                        </div>
-                        <div className="absolute bottom-3 sm:bottom-4 right-3 sm:right-4">
-                          <Button
-                            size="sm"
-                            className="bg-white text-gray-800 hover:bg-gray-100 text-xs sm:text-sm px-3 sm:px-4"
-                            onClick={() => handleNavigateToMap(promo.title)}
-                          >
-                            Ver ofertas
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+            {/* Contenedor con padding lateral unificado */}
+            <div className="relative py-8 bg-white px-0 sm:px-20 md:px-28 lg:px-40 xl:px-52 2xl:px-64">
+              <h2 className="text-3xl sm:text-3xl font-semibold">
+                Ofertas destacadas de la semana
+              </h2>
+              <p className="mt-2 text-gray-600 text-base sm:text-lg">
+                Descubrí las mejores promociones seleccionadas especialmente para vos. Tecnología, moda, hogar y más, con descuentos imperdibles por tiempo limitado.
+              </p>
+
+              {/* Carousel con mismo padding lateral, sin margen negativo */}
+              <div className="relative overflow-x-auto scroll-smooth px-0">
+                <div className="px-0">
+                  <AppleCardsCarousel cards={applePromotions} />
+                </div>
               </div>
+
+              {/* Degradados laterales para ocultar bordes */}
+              <div
+                className="pointer-events-none absolute top-0 left-0 h-full w-12 sm:w-20 md:w-28 lg:w-36 xl:w-40 2xl:w-48"
+                style={{ background: 'linear-gradient(to right, white, transparent)' }}
+              />
+              <div
+                className="pointer-events-none absolute top-0 right-0 h-full w-12 sm:w-20 md:w-28 lg:w-36 xl:w-40 2xl:w-48"
+                style={{ background: 'linear-gradient(to left, white, transparent)' }}
+              />
             </div>
 
+
             {/* Sección de Categorías */}
-            <div className="py-4 sm:py-6 md:py-8 px-4 sm:px-6">
+            <div className="py-4 sm:py-6 md:py-8 px-12 sm:px-20 md:px-28 lg:px-40 xl:px-52 2xl:px-64">
               <div className="mb-4 sm:mb-6">
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#2D3844]">Explorar categorías</h2>
                 <p className="text-sm sm:text-base text-gray-600 mt-1">Encuentra lo que necesitas</p>
               </div>
 
-              {/* Carrusel de categorías */}
               <div className="flex gap-3 sm:gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory">
                 {Array.from({ length: Math.ceil(categories.length / 8) }, (_, groupIndex) => (
                   <div
@@ -236,7 +228,6 @@ export default function App() {
                 ))}
               </div>
 
-              {/* Indicadores de página */}
               <div className="flex justify-center mt-4 sm:mt-6 gap-1 sm:gap-2">
                 {Array.from({ length: Math.ceil(categories.length / 8) }, (_, index) => (
                   <div
@@ -248,7 +239,7 @@ export default function App() {
             </div>
 
             {/* Productos Destacados */}
-            <div className="px-4 sm:px-6 py-4 sm:py-6 md:py-8">
+            <div className="px-12 sm:px-20 md:px-28 lg:px-40 xl:px-52 2xl:px-64 py-4 sm:py-6 md:py-8">
               <div className="flex items-center justify-between mb-4 sm:mb-6">
                 <div>
                   <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#2D3844]">Productos destacados</h2>
@@ -338,27 +329,28 @@ export default function App() {
       case "favorites":
         return <FavoritesScreen />
     }
-
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeScreen}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            {renderScreen()}
-          </motion.div>
-        </AnimatePresence>
-
-        <FloatingNavigation
-          activeScreen={activeScreen}
-          onScreenChange={setActiveScreen}
-          hideOnMap={activeScreen === "map"}
-        />
-      </div>
-    )
+    return null
   }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeScreen}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+        >
+          {renderScreen()}
+        </motion.div>
+      </AnimatePresence>
+
+      <FloatingNavigation
+        activeScreen={activeScreen}
+        onScreenChange={setActiveScreen}
+        hideOnMap={activeScreen === "map"}
+      />
+    </div>
+  )
 }
