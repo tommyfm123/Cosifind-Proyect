@@ -2,19 +2,20 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { MapPin, Star, Truck } from "lucide-react"
+import { MapPin, Star, Truck, ChevronLeft, ChevronRight } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import MapScreen from "@/components/screens/MapScreen"
-import MessagesScreen from "@/components/screens/MessagesScreen"
-import ProfileScreen from "@/components/screens/ProfileScreen"
-import FavoritesScreen from "@/components/screens/FavoritesScreen"
+import MapScreen from "@/app/map/page"
+import MessagesScreen from "@/app/messages/page"
+import ProfileScreen from "@/app/profile/page"
+import FavoritesScreen from "@/app/favorites/page"
 import FloatingNavigation from "@/components/navigation/FloatingNavigation"
 import Header from "@/components/common/Header"
+import Footer from "@/components/common/Footer"
 
-import { AppleCardsCarousel, Card as AppleCard } from '@/components/ui/apple-cards-carousel';
+import { AppleCardsCarousel } from '@/components/ui/apple-cards-carousel';
 
 // Promociones estilo Apple
 const applePromotions = [
@@ -145,6 +146,23 @@ const featuredProducts = [
 export default function App() {
   const [activeScreen, setActiveScreen] = useState("home")
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined)
+  // Estado para paginación de categorías
+  const [categoryPage, setCategoryPage] = useState(0)
+  const categoriesPerPage = 8
+  const totalPages = Math.ceil(categories.length / categoriesPerPage)
+
+  const handleNextPage = () => {
+    if (categoryPage < totalPages - 1) {
+      setCategoryPage(categoryPage + 1)
+    }
+  }
+
+  const handlePrevPage = () => {
+    if (categoryPage > 0) {
+      setCategoryPage(categoryPage - 1)
+    }
+  }
+
 
   const handleNavigateHome = () => {
     setActiveScreen("home")
@@ -165,22 +183,27 @@ export default function App() {
     switch (activeScreen) {
       case "home":
         return (
-          <div className="min-h-screen bg-[#F8FAFC] pb-24 sm:pb-32">
-            {/* Header con Search Bar */}
+          <div className=" bg-[#F8FAFC] min-h-screen border-none">
+
             <Header activeScreen="home" />
 
             {/* Contenedor con padding lateral unificado */}
-            <div className="relative py-8 bg-white px-0 sm:px-20 md:px-28 lg:px-40 xl:px-52 2xl:px-64">
-              <h2 className="text-3xl sm:text-3xl font-semibold">
-                Ofertas destacadas de la semana
-              </h2>
-              <p className="mt-2 text-gray-600 text-base sm:text-lg">
-                Descubrí las mejores promociones seleccionadas especialmente para vos. Tecnología, moda, hogar y más, con descuentos imperdibles por tiempo limitado.
-              </p>
+            <div className="relative py-8 bg-white px-10 gap-10 sm:px-2 md:px-28 lg:px-40 xl:px-52 2xl:px-64 ">
+              <div className="flex flex-col gap-4">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-gray-900">
+                  Destacados de la semana
+                </h2>
+                <p className="text-sm sm:text-base md:text-lg text-gray-500 leading-relaxed max-w-xl">
+                  Seleccionamos lo mejor para vos. Tecnología, moda, hogar y más, con descuentos exclusivos por tiempo limitado.
+                </p>
+
+              </div>
+
+
 
               {/* Carousel con mismo padding lateral, sin margen negativo */}
               <div className="relative overflow-x-auto scroll-smooth px-0">
-                <div className="px-0">
+                <div>
                   <AppleCardsCarousel cards={applePromotions} />
                 </div>
               </div>
@@ -198,48 +221,71 @@ export default function App() {
 
 
             {/* Sección de Categorías */}
-            <div className="py-4 sm:py-6 md:py-8 px-12 sm:px-20 md:px-28 lg:px-40 xl:px-52 2xl:px-64">
-              <div className="mb-4 sm:mb-6">
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#2D3844]">Explorar categorías</h2>
-                <p className="text-sm sm:text-base text-gray-600 mt-1">Encuentra lo que necesitas</p>
-              </div>
+            <div className="relative py-8 bg-gray-50 px-10 gap-10 sm:px-2 md:px-28 lg:px-40 xl:px-52 2xl:px-64 ">
 
-              <div className="flex gap-3 sm:gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory">
-                {Array.from({ length: Math.ceil(categories.length / 8) }, (_, groupIndex) => (
-                  <div
-                    key={groupIndex}
-                    className="flex-shrink-0 w-full grid grid-cols-4 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 sm:gap-3 md:gap-4 snap-start"
+
+              <div className="mb-4 sm:mb-6 flex justify-between items-center">
+                <div>
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#2D3844]">Explorar categorías</h2>
+                  <p className="text-sm sm:text-base text-gray-600 mt-1">Encuentra lo que necesitas</p>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="border border-gray-300"
+                    onClick={handlePrevPage}
+                    disabled={categoryPage === 0}
                   >
-                    {categories.slice(groupIndex * 8, (groupIndex + 1) * 8).map((category, index) => (
-                      <Button
-                        key={category.id}
-                        variant="ghost"
-                        className={`h-auto p-2 sm:p-3 md:p-4 flex flex-col items-center gap-1 sm:gap-2 md:gap-3 rounded-xl sm:rounded-2xl hover:scale-105 transition-all duration-300 animate-in fade-in slide-in-from-bottom border ${category.color} bg-white shadow-sm hover:shadow-md min-h-[80px] sm:min-h-[90px] md:min-h-[100px]`}
-                        style={{ animationDelay: `${(groupIndex * 8 + index) * 50}ms` }}
-                        onClick={() => handleNavigateToMap(category.name)}
-                      >
-                        <span className="text-xl sm:text-2xl md:text-3xl">{category.icon}</span>
-                        <span className="text-[10px] sm:text-xs md:text-sm font-semibold text-center leading-tight">
-                          {category.name}
-                        </span>
-                      </Button>
-                    ))}
-                  </div>
-                ))}
+                    <ChevronLeft className="w-5 h-5" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="border border-gray-300"
+                    onClick={handleNextPage}
+                    disabled={categoryPage === totalPages - 1}
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </Button>
+                </div>
               </div>
 
+              {/* Grid con las categorías actuales */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+                {categories
+                  .slice(categoryPage * categoriesPerPage, (categoryPage + 1) * categoriesPerPage)
+                  .map((category, index) => (
+                    <Button
+                      key={category.id}
+                      variant="ghost"
+                      className={`h-auto min-w-[85px] p-2 sm:p-3 md:p-4 flex flex-col items-center gap-1 sm:gap-4 md:gap-3 rounded-xl sm:rounded-2xl border ${category.color} bg-white shadow-sm hover:shadow-md min-h-[80px] sm:min-h-[90px] md:min-h-[100px]`}
+                      style={{ animationDelay: `${index * 50}ms` }}
+                      onClick={() => handleNavigateToMap(category.name)}
+                    >
+                      <span className="text-xl sm:text-2xl md:text-3xl">{category.icon}</span>
+                      <span className="text-[10px] sm:text-xs md:text-sm font-semibold text-center leading-tight">
+                        {category.name}
+                      </span>
+                    </Button>
+                  ))}
+              </div>
+
+              {/* Paginación - indicadores */}
               <div className="flex justify-center mt-4 sm:mt-6 gap-1 sm:gap-2">
-                {Array.from({ length: Math.ceil(categories.length / 8) }, (_, index) => (
+                {Array.from({ length: totalPages }, (_, index) => (
                   <div
                     key={index}
-                    className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-gray-300 transition-colors duration-200"
+                    className={`w-2 h-2 rounded-full transition-colors duration-300 ${index === categoryPage ? "bg-blue-500" : "bg-gray-300"
+                      }`}
                   />
                 ))}
               </div>
             </div>
 
             {/* Productos Destacados */}
-            <div className="px-12 sm:px-20 md:px-28 lg:px-40 xl:px-52 2xl:px-64 py-4 sm:py-6 md:py-8">
+            <div className="relative py-8 bg-white px-10 gap-10 sm:px-2 md:px-28 lg:px-40 xl:px-52 2xl:px-64 ">
+
               <div className="flex items-center justify-between mb-4 sm:mb-6">
                 <div>
                   <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#2D3844]">Productos destacados</h2>
@@ -248,7 +294,7 @@ export default function App() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-[#1B8FF] hover:text-[#1B8FF]/80 text-xs sm:text-sm"
+                  className="bg-white text-[#1B8FF] border border-[#1B8FF] hover:bg-[#1B8FF]/10 text-xs sm:text-sm"
                   onClick={handleShowAllProducts}
                 >
                   Ver todos
@@ -262,7 +308,7 @@ export default function App() {
                     className="hover:shadow-xl transition-all duration-300 animate-in fade-in slide-in-from-bottom border-0 shadow-md bg-white"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <CardContent className="p-4 sm:p-6">
+                    <CardContent className="p-4 sm:p-6 ">
                       <div className="flex sm:flex-col gap-3 sm:gap-4">
                         <div className="relative flex-shrink-0">
                           <Image
@@ -270,7 +316,8 @@ export default function App() {
                             alt={product.name}
                             width={100}
                             height={100}
-                            className="w-20 h-20 sm:w-full sm:h-32 md:h-40 object-cover rounded-lg sm:rounded-xl"
+                            className="w-20 h-20 sm:w-full sm:h-32 md:h-40 object-contain rounded-lg sm:rounded-xl"
+
                           />
                           {product.discount > 0 && (
                             <Badge className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-red-500 text-white text-[10px] sm:text-xs px-1 sm:px-2">
@@ -278,13 +325,8 @@ export default function App() {
                             </Badge>
                           )}
                         </div>
-                        <div className="flex-1 sm:flex-none">
-                          <Badge
-                            variant="secondary"
-                            className="mb-2 text-[10px] sm:text-xs bg-[#1B8FF]/10 text-[#1B8FF]"
-                          >
-                            {product.badge}
-                          </Badge>
+                        <div className="flex-1 sm:flex-none ">
+
                           <h3 className="font-bold text-[#2D3844] mb-2 text-sm sm:text-base md:text-lg leading-tight">
                             {product.name}
                           </h3>
@@ -318,6 +360,7 @@ export default function App() {
                 ))}
               </div>
             </div>
+            <Footer />
           </div>
         )
       case "map":

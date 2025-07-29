@@ -8,13 +8,13 @@ export default function Footer() {
     <motion.footer
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gray-900 text-white py-8 px-4 sm:px-6 mt-8"
+      className="bg-gray-900 text-white py-16 px-4 sm:px-6 mt-8"
     >
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Company Info */}
           <div>
-            <h3 className="font-bold text-lg mb-3">LocalMarket</h3>
+            <h3 className="font-bold text-lg mb-3">Cosifind</h3>
             <p className="text-gray-400 text-sm mb-3">
               Encuentra los mejores productos locales cerca de ti. Conectamos compradores con vendedores de confianza.
             </p>
@@ -88,7 +88,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
-                <span>info@localmarket.com</span>
+                <span>info@cosifind.com</span>
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4" />
@@ -99,7 +99,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 mt-6 pt-6 text-center text-sm text-gray-400">
-          <p>&copy; 2024 LocalMarket. Todos los derechos reservados.</p>
+          <p>&copy; 2025 cosifind. Todos los derechos reservados.</p>
         </div>
       </div>
     </motion.footer>
