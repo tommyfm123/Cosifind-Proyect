@@ -115,7 +115,7 @@ export default function FavoritesScreen() {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-6 bg-white rounded-2xl shadow-lg border p-4"
+            className="mb-6 bg-white rounded-2xl  border p-4"
           >
             <h3 className="font-medium mb-3 text-[#2D3844]">Ordenar por:</h3>
             <div className="flex flex-wrap gap-2">
