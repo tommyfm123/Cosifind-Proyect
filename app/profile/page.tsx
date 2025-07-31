@@ -6,8 +6,7 @@ import { User, MapPin, Settings, Lock, Bell, CreditCard } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import Footer from "@/components/common/Footer"
-import Header from "@/components/common/Header"
+
 
 export default function ProfileScreen() {
   const [activeTab, setActiveTab] = useState("personal")
@@ -107,7 +106,6 @@ export default function ProfileScreen() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
       <div className="px-4 sm:px-6 py-6 pb-32">
         {/* Profile Header */}
         <div className="text-center mb-8">
@@ -154,8 +152,6 @@ export default function ProfileScreen() {
           </CardContent>
         </Card>
       </div>
-
-      <Footer />
     </div>
   )
 }

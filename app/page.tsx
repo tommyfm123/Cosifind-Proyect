@@ -11,9 +11,9 @@ import MapScreen from "@/app/map/page"
 import MessagesScreen from "@/app/messages/page"
 import ProfileScreen from "@/app/profile/page"
 import FavoritesScreen from "@/app/favorites/page"
-import FloatingNavigation from "@/components/navigation/FloatingNavigation"
-import Header from "@/components/common/Header"
-import Footer from "@/components/common/Footer"
+import BottomNavigationBar from "@/components/navigation/BottomNavigationBar"
+
+
 
 import { AppleCardsCarousel } from '@/components/ui/apple-cards-carousel';
 
@@ -184,8 +184,6 @@ export default function App() {
       case "home":
         return (
           <div className=" bg-[#F8FAFC] min-h-screen border-none">
-
-            <Header activeScreen="home" />
 
             {/* Contenedor con padding lateral unificado */}
             <div className="relative py-8 bg-white px-10 gap-10 sm:px-2 md:px-28 lg:px-40 xl:px-52 2xl:px-64 ">
@@ -360,7 +358,6 @@ export default function App() {
                 ))}
               </div>
             </div>
-            <Footer />
           </div>
         )
       case "map":
@@ -389,11 +386,7 @@ export default function App() {
         </motion.div>
       </AnimatePresence>
 
-      <FloatingNavigation
-        activeScreen={activeScreen}
-        onScreenChange={setActiveScreen}
-        hideOnMap={activeScreen === "map"}
-      />
+      <BottomNavigationBar activeScreen={activeScreen} onScreenChange={setActiveScreen} />
     </div>
   )
 }

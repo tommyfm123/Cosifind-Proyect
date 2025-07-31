@@ -8,8 +8,6 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { mockProducts } from "@/data/mockData"
-import Header from "@/components/common/Header"
-import Footer from "@/components/common/Footer"
 
 interface MapScreenProps {
   onNavigateHome?: () => void
@@ -18,13 +16,14 @@ interface MapScreenProps {
 
 export default function MapScreen({ onNavigateHome, selectedCategory }: MapScreenProps) {
   const [searchQuery, setSearchQuery] = useState("")
-  const [selectedProduct, setSelectedProduct] = useState(mockProducts[0])
+  const [selectedProduct, setSelectedProduct] = useState<typeof mockProducts[0] & { description?: string }>(mockProducts[0])
   const [isBottomSheetExpanded, setIsBottomSheetExpanded] = useState(false)
   const [sortBy, setSortBy] = useState("relevance")
   const [filteredProducts, setFilteredProducts] = useState(mockProducts)
   const [favorites, setFavorites] = useState<number[]>([])
   const [showFiltersDesktop, setShowFiltersDesktop] = useState(false)
   const [showFiltersMobile, setShowFiltersMobile] = useState(false)
+  const mainScrollRef = useRef<HTMLDivElement>(null)
 
   const [isProductModalOpen, setIsProductModalOpen] = useState(false)
   const [visibleProducts, setVisibleProducts] = useState(6)
@@ -130,17 +129,7 @@ export default function MapScreen({ onNavigateHome, selectedCategory }: MapScree
   }
 
   return (
-    <div className="h-screen bg-[#F8FAFC] relative overflow-auto">
-      <Header
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        placeholder={selectedCategory ? `Buscar en ${selectedCategory}...` : "Buscar en el mapa..."}
-        showFilters={true}
-        onFiltersClick={handleFiltersClick}
-        showBackButton={true}
-        onBackClick={handleGoHome}
-        variant="search"
-      />
+    <div ref={mainScrollRef} className="ref={mainScrollRef}h-screen bg-[#F8FAFC] relative overflow-auto">
 
       {/* Desktop Layout */}
       <div className="hidden lg:flex h-full">
@@ -443,8 +432,6 @@ export default function MapScreen({ onNavigateHome, selectedCategory }: MapScree
           </div>
         </DialogContent>
       </Dialog>
-
-      <Footer />
     </div>
   )
 }

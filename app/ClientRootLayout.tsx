@@ -1,15 +1,17 @@
 "use client"
 
 import { useState } from "react"
-import FloatingNavigation from "@/components/navigation/FloatingNavigation"
+import BottomNavigationBar from "@/components/navigation/BottomNavigationBar"
+import ClientHeaderWrapper from "@/app/ClientHeaderWrapper"
 
 export default function ClientRootLayout({ children }: { children: React.ReactNode }) {
     const [activeScreen, setActiveScreen] = useState("home")
 
     return (
         <>
+            <ClientHeaderWrapper />
             {children}
-            <FloatingNavigation activeScreen={activeScreen} onScreenChange={setActiveScreen} />
+            <BottomNavigationBar activeScreen={activeScreen} onScreenChange={setActiveScreen} />
         </>
     )
 }

@@ -7,12 +7,23 @@ import { Heart, MapPin, Star, MessageCircle, Map, Eye, ChevronLeft, ChevronRight
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { mockProducts } from "@/data/mockData"
-import Footer from "@/components/common/Footer"
-import Header from "@/components/common/Header"
+
+
+
+type Product = {
+  id: number
+  name: string
+  image: string
+  category: string
+  seller: string
+  rating: number
+  distance: string
+  price: number
+}
 
 export default function FavoritesScreen() {
-  const [favoriteProducts, setFavoriteProducts] = useState(mockProducts.slice(0, 6))
-  const [selectedProduct, setSelectedProduct] = useState(null)
+  const [favoriteProducts, setFavoriteProducts] = useState<Product[]>(mockProducts.slice(0, 6))
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [sortBy, setSortBy] = useState("recent")
@@ -86,8 +97,6 @@ export default function FavoritesScreen() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
-      <Header variant="logo-only" />
-
       <div className="px-4 sm:px-6 py-6 pb-32">
         {/* Page Header */}
         <div className="flex items-center justify-between mb-6">
@@ -231,7 +240,6 @@ export default function FavoritesScreen() {
         )}
       </div>
 
-      <Footer />
 
       {/* Product Details Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>

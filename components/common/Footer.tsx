@@ -8,7 +8,7 @@ export default function Footer() {
     <motion.footer
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gray-900 text-white py-16 px-4 sm:px-6 mt-8"
+      className="bg-gray-900 text-white py-16 px-4 sm:px-6"
     >
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

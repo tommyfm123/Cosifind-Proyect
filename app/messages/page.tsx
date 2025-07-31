@@ -7,8 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { mockConversations, mockMessages } from "@/data/mockData"
-import Footer from "@/components/common/Footer"
-import Header from "@/components/common/Header"
 
 export default function MessagesScreen() {
   const [selectedConversation, setSelectedConversation] = useState<number | null>(null)
@@ -86,9 +84,8 @@ export default function MessagesScreen() {
               className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-xs px-4 py-2 rounded-2xl ${
-                  message.sender === "user" ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-900"
-                }`}
+                className={`max-w-xs px-4 py-2 rounded-2xl ${message.sender === "user" ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-900"
+                  }`}
               >
                 <p>{message.text}</p>
                 <p className={`text-xs mt-1 ${message.sender === "user" ? "text-blue-100" : "text-gray-500"}`}>
@@ -120,7 +117,6 @@ export default function MessagesScreen() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
       <div className="px-4 sm:px-6 py-6 pb-32">
         <h1 className="text-2xl font-bold mb-4">Mensajes</h1>
 
@@ -167,8 +163,6 @@ export default function MessagesScreen() {
           ))}
         </div>
       </div>
-
-      <Footer />
     </div>
   )
 }
