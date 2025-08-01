@@ -7,8 +7,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
+interface ProfileScreenProps {
+  onLogout: () => void;
+}
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ onLogout }: ProfileScreenProps) {
   const [activeTab, setActiveTab] = useState("personal")
 
   const tabs = [

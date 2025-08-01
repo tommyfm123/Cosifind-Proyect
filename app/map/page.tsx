@@ -9,9 +9,11 @@ import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { mockProducts } from "@/data/mockData"
 
-interface MapScreenProps {
-  onNavigateHome?: () => void
+export interface MapScreenProps {
+  onNavigateHome: () => void
   selectedCategory?: string
+  searchQuery: string
+  onSearchChange?: (value: string) => void
 }
 
 export default function MapScreen({ onNavigateHome, selectedCategory }: MapScreenProps) {

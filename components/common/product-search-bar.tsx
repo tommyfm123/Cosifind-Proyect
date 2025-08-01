@@ -152,31 +152,37 @@ export default function ProductSearchBar({ className = "" }: ProductSearchBarPro
 
     return (
         <div className={`w-full max-w-3xl mx-auto px-4 py-2 ${className}`}>
-            <div className="bg-white rounded-[30px] border border-gray-200 h-[56px] flex items-center shadow-md w-full">
+            <div className="bg-white rounded-[10px] border border-gray-200 w-full
+            flex flex-col gap-2
+            md:flex-row md:items-center md:h-[56px] md:gap-0">
+
                 {/* Campo de Producto */}
-                <div className="flex-1 h-full flex flex-col justify-center px-6 cursor-pointer  rounded-[30px]">
-                    <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Producto</span>
+                <div className="flex-1 flex flex-col justify-center px-4 py-2 md:px-6 md:py-0 text-left">
+                    <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide text-left">Producto</span>
                     <Input
                         type="text"
-                        placeholder="Buscar productos..."
+                        placeholder="¿Qué producto buscás?"
                         value={product}
                         onChange={(e) => setProduct(e.target.value)}
-                        className="border-0 p-0 text-sm bg-white placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0 h-auto"
+                        className="border-0 p-0 rounded-none text-sm bg-white text-gray-900 placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0 h-auto text-left"
                         onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                     />
                 </div>
 
+                {/* Línea divisoria vertical SOLO en desktop */}
+                <div className="hidden md:block h-10 w-px bg-gray-200 mx-2" />
+
                 {/* Campo de Ubicación */}
-                <div className="flex-1 h-full flex flex-col justify-center px-6 relative border-l border-gray-200 cursor-pointers">
+                <div className="flex-1 flex flex-col justify-center px-4 py-2 relative md:px-6 md:py-0 text-left">
                     <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Ubicación</span>
+                        <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide text-left">Ubicación</span>
                         <Button
                             type="button"
                             variant="ghost"
                             size="sm"
                             onClick={getCurrentLocation}
                             disabled={isGettingLocation}
-                            className="h-5 px-1 flex items-center justify-center text-blue-600 hover:text-blue-700 hover:bg-blue-100 rounded-full"
+                            className="h-5 px-1 flex items-center justify-center text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-full"
                         >
                             {isGettingLocation ? <Loader2 className="h-3.5 w-3.5" /> : <MapPin className="h-3.5 w-3.5" />}
                             <span className="ml-1 text-[10px] font-semibold whitespace-nowrap">Obtener ubicación</span>
@@ -185,12 +191,12 @@ export default function ProductSearchBar({ className = "" }: ProductSearchBarPro
                     <Input
                         ref={locationInputRef}
                         type="text"
-                        placeholder="Introduce tu ubicación"
+                        placeholder="¿Dónde lo buscás?"
                         value={location}
                         onChange={(e) => handleLocationChange(e.target.value)}
                         onFocus={() => location.length > 0 && setShowLocationSuggestions(true)}
                         onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                        className="border-0 p-0 bg-white text-sm placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0 h-auto"
+                        className="border-0 rounded-none p-0 bg-white text-sm text-gray-900 placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0 h-auto text-left"
                     />
 
                     {/* Sugerencias de Ubicación */}
@@ -203,7 +209,7 @@ export default function ProductSearchBar({ className = "" }: ProductSearchBarPro
                                 <button
                                     key={suggestion.id}
                                     onClick={() => handleSuggestionClick(suggestion)}
-                                    className="w-full px-4 py-3 text-left  border-b border-gray-100 last:border-b-0 focus:outline-none"
+                                    className="w-full px-4 py-3 text-left border-b border-gray-100 last:border-b-0 focus:outline-none"
                                 >
                                     <div className="flex items-center">
                                         <MapPin className="h-4 w-4 text-gray-400 mr-3 flex-shrink-0" />
@@ -218,14 +224,20 @@ export default function ProductSearchBar({ className = "" }: ProductSearchBarPro
                     )}
                 </div>
 
+                {/* Línea divisoria vertical SOLO en desktop */}
+                <div className="hidden md:flex h-10 w-px bg-gray-300 mx-2" />
+
                 {/* Botón de Búsqueda */}
-                <div className="h-full flex items-center px-2">
+                <div className="flex items-center justify-center px-4 py-2 md:px-2 md:py-0 w-full md:w-auto">
                     <Button
                         onClick={handleSearch}
-                        className="rounded-[30px] h-10 w-10 bg-blue-900  flex-shrink-0"
+                        className="rounded-[8px] h-10 w-full md:w-10 bg-gray-900 flex-shrink-0 flex justify-center items-center"
                         size="icon"
                     >
-                        <Search className="h-5 w-5 text-white" />
+                        <div className="flex items-center justify-center w-full">
+                            <Search className="h-5 w-5 text-white" />
+                            <span className="ml-2 text-white text-sm font-medium block md:hidden">Buscar</span>
+                        </div>
                     </Button>
                 </div>
             </div>

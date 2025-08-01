@@ -15,6 +15,8 @@ import Logo from "@/components/common/Logo"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import ProductSearchBar from "@/components/common/product-search-bar"
+import { usePathname } from "next/navigation"
+
 
 interface HeaderProps {
   searchQuery?: string
@@ -42,6 +44,7 @@ export default function Header({
   onScreenChange,
 }: HeaderProps) {
   const router = useRouter()
+  const pathname = usePathname()
   const navItems = [
     { id: "home", icon: Home, label: "Inicio", path: "/" },
     { id: "favorites", icon: Heart, label: "Favoritos", path: "/favorites" },
@@ -50,35 +53,43 @@ export default function Header({
     { id: "profile", icon: User, label: "Perfil", path: "/profile" },
   ]
 
+  const currentActive = navItems.find(item => pathname === item.path)?.id || "home"
+
+
   return (
-    <div className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100 h-20">
-      <div className="px-9 sm:px-6 h-full flex items-center">
+    <div className="sticky top-0 z-50 backdrop-blur bg-white/80 shadow-sm border-b border-white/20 h-16 lg:h-20 px-4 lg:px-9">
+      <div className="py-2 sm:px-6 h-full flex items-center">
+        {/* Versión mobile: solo logo centrado */}
+        <div className="flex lg:hidden w-full justify-center items-center h-full">
+          <button onClick={() => router.push("/")}>
+            <Logo size="sm" />
+          </button>
+        </div>
+        {/* Versión desktop: menú completo */}
         <div className="hidden lg:flex items-center w-full h-full justify-between">
           {/* Logo */}
           <div className="shrink-0">
-            <Logo size="sm" />
+            <button onClick={() => router.push("/")}>
+              <Logo size="sm" />
+            </button>
           </div>
-
-          {/* SearchBar (oculto si no es search) */}
-          {variant === "search" ? (
-            <div className="flex-1 h-full flex items-center mx-8">
-              <ProductSearchBar className="w-full h-12 py-0 px-0 shadow-none" />
-            </div>
-          ) : (
-            <div className="flex-1" /> // Espacio vacío para empujar el menú a la derecha
-          )}
-
+          {/* SearchBar SOLO si no estamos en "/" */}
+          <div className="flex-1 h-full flex items-center mx-8">
+            {currentActive !== "home" && (
+              <ProductSearchBar className="w-full h-auto py-0 px-0 shadow-none" />
+            )}
+          </div>
           {/* Navigation */}
           <ul className="flex items-center gap-4 shrink-0">
             {navItems.map((item) => {
               const Icon = item.icon
-              const isActive = activeScreen === item.id
+              const isActive = currentActive === item.id
               return (
                 <li key={item.id} className="relative">
                   {isActive && (
                     <motion.div
                       layoutId="nav-indicator"
-                      className="absolute inset-0 rounded-lg bg-blue-100"
+                      className="absolute inset-0 rounded-lg bg-gray-100"
                       style={{ zIndex: 0 }}
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
@@ -91,8 +102,8 @@ export default function Header({
                       router.push(item.path)
                     }}
                     className={`flex items-center gap-2 transition-colors duration-200 px-3 py-2 rounded-lg relative z-10 ${isActive
-                      ? "text-[#1B8FF] font-semibold bg-blue-100"
-                      : "text-gray-600 hover:text-[#1B8FF] hover:bg-blue-100"
+                      ? "text-[#222] font-semibold bg-gray-100"
+                      : "text-gray-600 hover:text-[#222] hover:bg-gray-100"
                       }`}
                   >
                     <Icon className="w-4 h-4" />
@@ -107,3 +118,4 @@ export default function Header({
     </div>
   )
 }
+
