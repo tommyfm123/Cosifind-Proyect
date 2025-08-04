@@ -90,10 +90,7 @@ export default function Footer() {
                 <Mail className="w-4 h-4" />
                 <span>info@cosifind.com</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4" />
-                <span>Lun - Vie: 9:00 - 18:00</span>
-              </div>
+
             </div>
           </div>
         </div>

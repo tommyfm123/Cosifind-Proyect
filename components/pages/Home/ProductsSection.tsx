@@ -32,7 +32,7 @@ export default function ProductsSection({ products, onShowAllProducts }: Product
     }
 
     return (
-        <div className="px-4 py-8 sm:px-8 md:px-16 lg:px-32 bg-white">
+        <div className="px-4 py-20 md:px-16 lg:px-32 bg-white">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 px-2 gap-4">
                 <div>
                     <h2 className="text-2xl sm:text-4xl font-light text-[#1B2A41] mb-2 sm:mb-4">Productos mas vistos</h2>
@@ -47,7 +47,7 @@ export default function ProductsSection({ products, onShowAllProducts }: Product
                     Ver todos
                 </Button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 ">
                 {getCurrentProducts().map((product) => (
                     <div key={product.id} className="cursor-pointer" onClick={onShowAllProducts}>
                         <div className="relative m-2 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 shadow-md" onClick={onShowAllProducts}>

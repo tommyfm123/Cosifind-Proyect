@@ -68,11 +68,11 @@ export default function CategoriesSection({ categories, onNavigateToMap }: Categ
     }
 
     return (
-        <div className="px-2 sm:px-4 md:px-8 lg:px-16 xl:px-32 py-8 sm:py-12 md:py-16 lg:py-20 bg-gray-50">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 px-2 gap-4">
+        <div className="px-2 py-8 bg-gray-50 sm:px-4 sm:py-12 md:px-8 md:py-16 lg:px-16 lg:py-20 xl:px-32">
+            <div className="flex flex-col items-start justify-between gap-4 px-2 mb-6 sm:flex-row sm:items-center">
                 <div>
-                    <h2 className="text-2xl sm:text-4xl font-medium text-[#1B2A41] mb-2 sm:mb-4">Categorías destacadas</h2>
-                    <p className="text-xs sm:text-sm text-gray-600">Explora por categoría</p>
+                    <h2 className="text-2xl font-medium text-[#1B2A41] mb-2 sm:text-4xl sm:mb-4">Categorías destacadas</h2>
+                    <p className="text-base text-gray-600 ">Explora por categoría</p>
                 </div>
                 <div className="flex gap-2">
                     <Button variant="outline" size="sm" onClick={prevPage} disabled={totalPages <= 1}>
@@ -85,32 +85,33 @@ export default function CategoriesSection({ categories, onNavigateToMap }: Categ
             </div>
             <div className="relative overflow-hidden" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
                 <div className="space-y-4">
-                    <div className="p-2 sm:p-3 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 sm:gap-3 md:gap-4">
+                    <div className="grid grid-cols-2 gap-2 p-2 sm:grid-cols-4 sm:gap-3 sm:p-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4">
                         {getCurrentCategories().map((category, index) => (
-                            <Card
-                                key={category.id}
-                                className={`cursor-pointer hover:shadow-sm transition-all duration-300 bg-white border border-gray-100 hover:border-[#1B8FF]/30 group rounded-lg ${index >= (isMobile ? 3 : 8) ? "hover:shadow-lg" : ""}`}
-                                onClick={() => handleCategoryClick(category)}
-                            >
-                                <CardContent className="p-2 sm:p-3 flex flex-col items-center text-center h-full justify-between min-h-[80px] sm:min-h-[100px] md:min-h-[120px]">
-                                    <div className="flex flex-col items-center flex-1 justify-center">
-                                        <div className={`text-xl sm:text-2xl md:text-3xl mb-2 ${index >= (isMobile ? 3 : 8) ? "group-hover:scale-110 transition-transform duration-200" : ""}`}>
-                                            <category.icon />
+                            <div key={category.id}>
+                                <Card
+                                    className={`cursor-pointer hover:shadow-sm transition-all duration-300 bg-white border border-gray-100 hover:border-[#1B8FF]/30 group rounded-lg ${index >= (isMobile ? 3 : 8) ? "hover:shadow-lg" : ""}`}
+                                    onClick={() => handleCategoryClick(category)}
+                                >
+                                    <CardContent className="flex flex-col items-center justify-between h-full p-2 text-center sm:p-3 min-h-[80px] sm:min-h-[100px] md:min-h-[120px]">
+                                        <div className="flex flex-col items-center justify-center flex-1">
+                                            <div className={`text-xl mb-2 sm:text-2xl md:text-3xl ${index >= (isMobile ? 3 : 8) ? "group-hover:scale-110 transition-transform duration-200" : ""}`}>
+                                                <category.icon />
+                                            </div>
+                                            <h3 className={`text-xs font-semibold leading-tight mb-2 line-clamp-2 sm:text-sm ${index >= (isMobile ? 3 : 8) ? "text-[#1B2A41]" : "text-black"}`}>
+                                                {category.name}
+                                            </h3>
                                         </div>
-                                        <h3 className={`text-xs sm:text-sm font-semibold leading-tight mb-2 line-clamp-2 ${index >= (isMobile ? 3 : 8) ? "text-[#1B2A41]" : "text-black"}`}>
-                                            {category.name}
-                                        </h3>
-                                    </div>
-                                    <Badge variant="secondary" className={`text-xs bg-dark text-white ${index >= (isMobile ? 3 : 8) ? "" : "hover:bg-dark"}`}>
-                                        {category.count}
-                                    </Badge>
-                                </CardContent>
-                            </Card>
+                                        <Badge variant="secondary" className={`text-xs bg-dark text-white ${index >= (isMobile ? 3 : 8) ? "" : "hover:bg-dark"}`}>
+                                            {category.count}
+                                        </Badge>
+                                    </CardContent>
+                                </Card>
+                            </div>
                         ))}
                     </div>
                 </div>
             </div>
-            <div className="flex justify-center mt-4 sm:mt-6 gap-2">
+            <div className="flex justify-center gap-2 mt-4 sm:mt-6">
                 {Array.from({ length: totalPages }, (_, index) => (
                     <button
                         key={index}

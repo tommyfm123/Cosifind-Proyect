@@ -127,7 +127,7 @@ export default function Header({
           <Button
             variant="default"
             size="sm"
-            className="bg-black text-white ml-4"
+            className="bg-dark text-white ml-4"
             onClick={() => router.push("/signup")}
           >
             Adherí tu comercio

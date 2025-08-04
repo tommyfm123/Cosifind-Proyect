@@ -10,31 +10,40 @@ interface HeroSectionProps {
 
 export default function HeroSection({ searchQuery, onSearchChange }: HeroSectionProps) {
     return (
-        <div className="relative bg-gradient-to-br from-[#0f172a] via-[#4f46e5] to-[#1e293b] min-h-[92vh] flex items-center justify-center px-4 sm:px-6 md:px-12 py-10 sm:py-20 text-white text-center overflow-hidden">
-            <div className="absolute inset-0 bg-black/30 z-0" />
+        <div
+            className="relative min-h-[92vh] flex flex-col items-center justify-center px-4 py-10 text-white text-center overflow-hidden sm:px-6 sm:py-20 md:px-12"
+            style={{
+                backgroundImage: "url(/images/banner.png)",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+            }}
+        >
+            {/* Overlay azul oscuro con opacidad */}
+            <div className="absolute inset-0 bg-[#0a0f2c]/90 z-0" />
+
             <div className="relative z-10 max-w-5xl mx-auto">
-                <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight leading-tight mb-6">
+                <h1 className="text-4xl font-semibold tracking-tight leading-tight mb-6 sm:text-5xl md:text-6xl">
                     Buscá productos cerca tuyo.
                 </h1>
-                <p className="text-base sm:text-lg md:text-2xl font-light text-white/90 mb-10 max-w-3xl mx-auto">
+                <p className="text-base font-light text-white/90 mb-10 max-w-3xl mx-auto sm:text-lg md:text-2xl">
                     Compará precios, encontrá ofertas únicas y andá a comprarlo en persona.
                 </p>
                 <ProductSearchBar
-                    className="mt-4 max-w-full sm:max-w-2xl mx-auto"
+                    className="mt-4 max-w-full mx-auto sm:max-w-2xl"
                     searchQuery={searchQuery}
                     onSearchChange={onSearchChange}
                 />
                 <div className="flex flex-wrap justify-center gap-4 mt-8">
                     <a
                         href="#"
-                        className="flex items-center gap-2 px-4 py-2 rounded-[10px] bg-white text-[#0f172a] font-medium shadow text-sm sm:text-base"
+                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#0f172a] bg-white rounded-[10px] shadow sm:text-base"
                     >
                         <img src="/images/icons/android.png" alt="Android" className="w-5 h-5" />
                         Android
                     </a>
                     <a
                         href="#"
-                        className="flex items-center gap-2 px-4 py-2 rounded-[10px] bg-white text-[#0f172a] font-medium shadow text-sm sm:text-base"
+                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#0f172a] bg-white rounded-[10px] shadow sm:text-base"
                     >
                         <img src="/images/icons/apple-logo.png" alt="Apple" className="w-5 h-5" />
                         iOS
@@ -42,5 +51,6 @@ export default function HeroSection({ searchQuery, onSearchChange }: HeroSection
                 </div>
             </div>
         </div>
+
     )
 }

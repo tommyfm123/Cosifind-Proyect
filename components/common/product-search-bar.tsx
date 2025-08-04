@@ -13,6 +13,8 @@ interface LocationSuggestion {
 
 interface ProductSearchBarProps {
     className?: string
+    searchQuery?: string
+    onSearchChange?: (value: string) => void
 }
 
 // Mock location data - en una aplicación real, esto vendría de una API de geocodificación
@@ -27,6 +29,15 @@ const mockLocations: LocationSuggestion[] = [
     { id: "8", name: "Austin", fullName: "Austin, TX, USA" },
 ]
 
+const mockProducts = [
+    { id: "1", name: "iPhone 15 Pro Max" },
+    { id: "2", name: "MacBook Air M3" },
+    { id: "3", name: "Sony WH-1000XM5" },
+    { id: "4", name: "Samsung Galaxy S24" },
+    { id: "5", name: "Nintendo Switch OLED" },
+    { id: "6", name: "iPad Pro 12.9" },
+]
+
 export default function ProductSearchBar({ className = "" }: ProductSearchBarProps) {
     const [product, setProduct] = useState("")
     const [location, setLocation] = useState("")
@@ -34,6 +45,8 @@ export default function ProductSearchBar({ className = "" }: ProductSearchBarPro
     const [showLocationSuggestions, setShowLocationSuggestions] = useState(false)
     const [isGettingLocation, setIsGettingLocation] = useState(false)
     const [hasLocationPermission, setHasLocationPermission] = useState<boolean | null>(null)
+    const [productSuggestions, setProductSuggestions] = useState<{ id: string; name: string }[]>([])
+    const [showProductSuggestions, setShowProductSuggestions] = useState(false)
 
     const locationInputRef = useRef<HTMLInputElement>(null)
     const suggestionsRef = useRef<HTMLDivElement>(null)
@@ -114,11 +127,31 @@ export default function ProductSearchBar({ className = "" }: ProductSearchBarPro
         )
     }
 
-    // Manejar la selección de una sugerencia
+    // Manejar la selección de una sugerencia de ubicación
     const handleSuggestionClick = (suggestion: LocationSuggestion) => {
         setLocation(suggestion.fullName)
         setShowLocationSuggestions(false)
         locationInputRef.current?.blur()
+    }
+
+    // Manejar cambios en la entrada de producto y mostrar sugerencias
+    const handleProductChange = (value: string) => {
+        setProduct(value)
+        if (value.length > 0) {
+            const filtered = mockProducts.filter((prod) =>
+                prod.name.toLowerCase().includes(value.toLowerCase()),
+            )
+            setProductSuggestions(filtered)
+            setShowProductSuggestions(true)
+        } else {
+            setShowProductSuggestions(false)
+        }
+    }
+
+    // Manejar la selección de una sugerencia de producto
+    const handleProductSuggestionClick = (suggestion: { id: string; name: string }) => {
+        setProduct(suggestion.name)
+        setShowProductSuggestions(false)
     }
 
     // Manejar la búsqueda
@@ -144,6 +177,7 @@ export default function ProductSearchBar({ className = "" }: ProductSearchBarPro
                 !locationInputRef.current?.contains(event.target as Node)
             ) {
                 setShowLocationSuggestions(false)
+                setShowProductSuggestions(false)
             }
         }
         document.addEventListener("mousedown", handleClickOutside)
@@ -151,22 +185,35 @@ export default function ProductSearchBar({ className = "" }: ProductSearchBarPro
     }, [])
 
     return (
-        <div className={`w-full max-w-3xl mx-auto px-4 py-2 ${className}`}>
+        <div className={`w-full max-w-3xl mx-auto px-4 py-2 relative z-50 ${className}`}>
             <div className="bg-white rounded-[10px] border border-gray-200 w-full
             flex flex-col gap-2
             md:flex-row md:items-center md:h-[56px] md:gap-0">
 
                 {/* Campo de Producto */}
-                <div className="flex-1 flex flex-col justify-center px-4 py-2 md:px-6 md:py-0 text-left">
+                <div className="flex-1 flex flex-col justify-center px-4 py-2 md:px-6 md:py-0 text-left relative">
                     <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide text-left">Producto</span>
                     <Input
                         type="text"
                         placeholder="¿Qué producto buscás?"
                         value={product}
-                        onChange={(e) => setProduct(e.target.value)}
+                        onChange={(e) => handleProductChange(e.target.value)}
                         className="border-0 p-0 rounded-none text-sm bg-white text-gray-900 placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0 h-auto text-left"
                         onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                     />
+                    {showProductSuggestions && productSuggestions.length > 0 && (
+                        <div className="absolute top-full left-1 right-0 mt-2 bg-white rounded-b-xl shadow-lg z-50 max-h-60 overflow-y-auto">
+                            {productSuggestions.map((suggestion) => (
+                                <button
+                                    key={suggestion.id}
+                                    onClick={() => handleProductSuggestionClick(suggestion)}
+                                    className="w-full px-4 py-3 text-left border-b border-gray-100 last:border-b-0 focus:outline-none"
+                                >
+                                    <div className="text-sm font-medium text-gray-900">{suggestion.name}</div>
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 {/* Línea divisoria vertical SOLO en desktop */}
@@ -203,7 +250,7 @@ export default function ProductSearchBar({ className = "" }: ProductSearchBarPro
                     {showLocationSuggestions && locationSuggestions.length > 0 && (
                         <div
                             ref={suggestionsRef}
-                            className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto"
+                            className="absolute top-full left-0 right-0 mt-2 bg-white   border-gray-200 rounded-b-xl shadow-lg z-50 max-h-60 overflow-y-auto"
                         >
                             {locationSuggestions.map((suggestion) => (
                                 <button
@@ -231,7 +278,7 @@ export default function ProductSearchBar({ className = "" }: ProductSearchBarPro
                 <div className="flex items-center justify-center px-4 py-2 md:px-2 md:py-0 w-full md:w-auto">
                     <Button
                         onClick={handleSearch}
-                        className="rounded-[8px] h-10 w-full md:w-10 bg-gray-900 flex-shrink-0 flex justify-center items-center"
+                        className="rounded-[8px] h-10 w-full md:w-10 bg-dark flex-shrink-0 flex justify-center items-center"
                         size="icon"
                     >
                         <div className="flex items-center justify-center w-full">
