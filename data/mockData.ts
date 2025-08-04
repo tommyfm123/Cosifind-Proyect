@@ -31,6 +31,7 @@ import {
   Droplet,
   Bike,
 } from "lucide-react"
+
 export const TUCUMAN_CENTER = [-26.8083, -65.2176]
 
 export const mockProducts = [
@@ -50,7 +51,8 @@ export const mockProducts = [
     name: "MacBook Air M3",
     seller: "Apple Store",
     price: 1199,
-    image: "/images/macbookm3.jpg", distance: "1.2 km",
+    image: "/images/macbookm3.jpg",
+    distance: "1.2 km",
     rating: 4.9,
     category: "Computadoras",
     coordinates: [-26.81, -65.22] as [number, number],
@@ -60,7 +62,8 @@ export const mockProducts = [
     name: "Sony WH-1000XM5",
     seller: "Audio Pro",
     price: 399,
-    image: "/images/macbookm3.jpg", distance: "0.8 km",
+    image: "/images/macbookm3.jpg",
+    distance: "0.8 km",
     rating: 4.7,
     category: "Audio",
     coordinates: [-26.805, -65.215] as [number, number],
@@ -70,7 +73,8 @@ export const mockProducts = [
     name: "Samsung Galaxy S24",
     seller: "Samsung Plaza",
     price: 899,
-    image: "/images/macbookm3.jpg", distance: "2.1 km",
+    image: "/images/macbookm3.jpg",
+    distance: "2.1 km",
     rating: 4.6,
     category: "Smartphones",
     coordinates: [-26.812, -65.222] as [number, number],
@@ -80,7 +84,8 @@ export const mockProducts = [
     name: "Nintendo Switch OLED",
     seller: "GameZone",
     price: 349,
-    image: "/images/macbookm3.jpg", distance: "1.5 km",
+    image: "/images/macbookm3.jpg",
+    distance: "1.5 km",
     rating: 4.8,
     category: "Gaming",
     coordinates: [-26.807, -65.218] as [number, number],
@@ -90,88 +95,46 @@ export const mockProducts = [
     name: "iPad Pro 12.9",
     seller: "Digital World",
     price: 1099,
-    image: "/images/macbookm3.jpg", distance: "0.9 km",
-    rating: 4.7,
-    category: "Tablets",
-    coordinates: [-26.809, -65.216] as [number, number],
-  },
-
-  {
-    id: 7,
-    name: "iPad Pro 12.9",
-    seller: "Digital World",
-    price: 1099,
-    image: "/images/macbookm3.jpg", distance: "0.9 km",
-    rating: 4.7,
-    category: "Tablets",
-    coordinates: [-26.809, -65.216] as [number, number],
-  },
-
-
-  {
-    id: 8,
-    name: "iPad Pro 12.9",
-    seller: "Digital World",
-    price: 1099,
-    image: "/images/macbookm3.jpg", distance: "0.9 km",
-    rating: 4.7,
-    category: "Tablets",
-    coordinates: [-26.809, -65.216] as [number, number],
-  },
-
-
-  {
-    id: 9,
-    name: "iPad Pro 12.9",
-    seller: "Digital World",
-    price: 1099,
-    image: "/images/macbookm3.jpg", distance: "0.9 km",
-    rating: 4.7,
-    category: "Tablets",
-    coordinates: [-26.809, -65.216] as [number, number],
-  },
-
-  {
-    id: 10,
-    name: "iPad Pro 12.9",
-    seller: "Digital World",
-    price: 1099,
     image: "/images/macbookm3.jpg",
     distance: "0.9 km",
     rating: 4.7,
     category: "Tablets",
     coordinates: [-26.809, -65.216] as [number, number],
   },
+  // Agregá más productos si querés...
 ]
 
-export const mockPromotions = [
+
+export const applePromotions = [
   {
-    id: 1,
-    title: "Black Friday",
-    subtitle: "Hasta 70% de descuento",
-    image: "/images/macbookm3.jpg",
-    color: "from-black to-gray-800",
+    src: "/images/tech.jpg",
+    title: "Ofertas en Electrónica",
+    category: "Semana de descuentos",
+    content: "Aprovechá hasta 40% OFF en celulares, parlantes y más.",
   },
   {
-    id: 2,
-    title: "Cyber Monday",
-    subtitle: "Ofertas en tecnología",
-    image: "/images/macbookm3.jpg",
-    color: "from-blue-600 to-purple-600",
+    src: "/images/gaming.jpg",
+    title: "Gaming Days",
+    category: "Promos Exclusivas",
+    content: "Descuentos en consolas, accesorios y videojuegos.",
   },
   {
-    id: 3,
-    title: "Hot Sale",
-    subtitle: "Los mejores precios del año",
-    image: "/images/macbookm3.jpg",
-    color: "from-red-500 to-orange-500",
+    src: "/images/ropa.jpg",
+    title: "Top Moda",
+    category: "Tendencias",
+    content: "Remeras, zapatillas y más con envíos gratis.",
   },
   {
-    id: 4,
-    title: "Descuentos Especiales",
-    subtitle: "En productos seleccionados",
-    image: "/images/macbookm3.jpg",
-    color: "from-green-500 to-teal-500",
+    src: "/images/deco.jpg",
+    title: "Ofertas en Hogar",
+    category: "Equipá tu casa",
+    content: "Muebles, cocina y electro hasta 30% OFF.",
+  },
+  {
+    src: "/images/school.jpg",
+    title: "Tecnología para el Estudio",
+    category: "Regreso a clases",
+    content: "Notebooks, tablets y más al mejor precio.",
   },
 ]
 
@@ -190,21 +153,21 @@ export const mockCategories = [
   { id: 12, name: "Cocina", icon: Coffee, count: 167 },
   { id: 13, name: "Música", icon: Music, count: 43 },
   { id: 14, name: "Cine", icon: Film, count: 32 },
-  { id: 15, name: "Gaming", icon: Monitor, count: 198 }, // No Gamepad, se usa Monitor
+  { id: 15, name: "Gaming", icon: Monitor, count: 198 },
   { id: 16, name: "Fitness", icon: Dumbbell, count: 87 },
   { id: 17, name: "Viajes", icon: MapPin, count: 65 },
   { id: 18, name: "Arte", icon: Palette, count: 45 },
   { id: 19, name: "Fotografía", icon: Camera, count: 78 },
   { id: 20, name: "Herramientas", icon: Wrench, count: 134 },
   { id: 21, name: "Oficina", icon: Clipboard, count: 156 },
-  { id: 22, name: "Salud", icon: Heart, count: 89 }, // No Heartbeat, se usa Heart
+  { id: 22, name: "Salud", icon: Heart, count: 89 },
   { id: 23, name: "Bebés", icon: Baby, count: 123 },
   { id: 24, name: "Joyería", icon: Diamond, count: 67 },
   { id: 25, name: "Relojes", icon: Clock, count: 89 },
   { id: 26, name: "Zapatos", icon: Zap, count: 234 },
   { id: 27, name: "Bolsos", icon: ShoppingBag, count: 145 },
   { id: 28, name: "Gafas", icon: Glasses, count: 78 },
-  { id: 29, name: "Instrumentos", icon: Music, count: 34 }, // No Music2, se usa Music
+  { id: 29, name: "Instrumentos", icon: Music, count: 34 },
   { id: 30, name: "Camping", icon: Tent, count: 56 },
   { id: 31, name: "Piscina", icon: Droplet, count: 23 },
   { id: 32, name: "Bicicletas", icon: Bike, count: 87 },
