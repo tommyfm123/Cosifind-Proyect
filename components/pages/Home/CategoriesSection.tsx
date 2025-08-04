@@ -71,7 +71,7 @@ export default function CategoriesSection({ categories, onNavigateToMap }: Categ
         <div className="px-2 sm:px-4 md:px-8 lg:px-16 xl:px-32 py-8 sm:py-12 md:py-16 lg:py-20 bg-gray-50">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 px-2 gap-4">
                 <div>
-                    <h2 className="text-2xl sm:text-4xl font-light text-[#1B2A41] mb-2 sm:mb-4">Categorías destacadas</h2>
+                    <h2 className="text-2xl sm:text-4xl font-medium text-[#1B2A41] mb-2 sm:mb-4">Categorías destacadas</h2>
                     <p className="text-xs sm:text-sm text-gray-600">Explora por categoría</p>
                 </div>
                 <div className="flex gap-2">
@@ -89,7 +89,7 @@ export default function CategoriesSection({ categories, onNavigateToMap }: Categ
                         {getCurrentCategories().map((category, index) => (
                             <Card
                                 key={category.id}
-                                className={`cursor-pointer hover:shadow-sm transition-all duration-300 bg-white border border-gray-100 hover:border-[#1B8FF]/30 group ${index >= (isMobile ? 3 : 8) ? "hover:shadow-lg" : ""}`}
+                                className={`cursor-pointer hover:shadow-sm transition-all duration-300 bg-white border border-gray-100 hover:border-[#1B8FF]/30 group rounded-lg ${index >= (isMobile ? 3 : 8) ? "hover:shadow-lg" : ""}`}
                                 onClick={() => handleCategoryClick(category)}
                             >
                                 <CardContent className="p-2 sm:p-3 flex flex-col items-center text-center h-full justify-between min-h-[80px] sm:min-h-[100px] md:min-h-[120px]">

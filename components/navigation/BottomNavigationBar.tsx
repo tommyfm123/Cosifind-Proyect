@@ -2,8 +2,9 @@
 
 import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 import { Home, Heart, MapPin, MessageCircle, User } from "lucide-react"
+import { useAuth } from "@/context/AuthContext"
 
 interface BottomNavigationBarProps {
     activeScreen: string
@@ -16,24 +17,42 @@ export default function BottomNavigationBar({
     onScreenChange,
     scrollContainerRef,
 }: BottomNavigationBarProps) {
+    const { isLoggedIn } = useAuth()
     const router = useRouter()
+    const pathname = usePathname()
     const [hidden, setHidden] = useState(false)
     const [lastScrollY, setLastScrollY] = useState(0)
 
-    const navItems = [
-        { id: "home", icon: Home, label: "Inicio", path: "/" },
-        { id: "favorites", icon: Heart, label: "Favoritos", path: "/favorites" },
-        { id: "map", icon: MapPin, label: "Mapa", path: "/map" },
-        { id: "messages", icon: MessageCircle, label: "Mensajes", path: "/messages" },
-        { id: "profile", icon: User, label: "Perfil", path: "/profile" },
-    ]
+    const navItems = isLoggedIn
+        ? [
+            { id: "home", icon: Home, label: "Inicio", path: "/" },
+            { id: "favorites", icon: Heart, label: "Favoritos", path: "/favorites" },
+            { id: "map", icon: MapPin, label: "Mapa", path: "/map" },
+            { id: "messages", icon: MessageCircle, label: "Mensajes", path: "/messages" },
+            { id: "profile", icon: User, label: "Mi Perfil", path: "/profile" },
+        ]
+        : [
+            { id: "home", icon: Home, label: "Inicio", path: "/" },
+            { id: "map", icon: MapPin, label: "Mapa", path: "/map" },
+            { id: "profile", icon: User, label: "Iniciar sesión", path: "/login" },
+        ]
 
+    const currentActive = navItems.find((item) => pathname === item.path)?.id || "home"
+
+    // Evitando que el BottomNavigationBar se oculte en la página de /map
     useEffect(() => {
         const container = scrollContainerRef?.current || window
         const handleScroll = () => {
             const currentScrollY = scrollContainerRef?.current
                 ? scrollContainerRef.current.scrollTop
                 : window.scrollY
+
+            // No ocultar el BottomNavigationBar en la página de /map
+            if (pathname === "/map") {
+                setHidden(false)
+                return
+            }
+
             if (currentScrollY > lastScrollY) {
                 setHidden(true)
             } else {
@@ -44,7 +63,7 @@ export default function BottomNavigationBar({
 
         container.addEventListener("scroll", handleScroll)
         return () => container.removeEventListener("scroll", handleScroll)
-    }, [lastScrollY, scrollContainerRef])
+    }, [lastScrollY, scrollContainerRef, pathname])
 
     return (
         <motion.div
@@ -56,7 +75,7 @@ export default function BottomNavigationBar({
             <div className="flex items-center justify-around">
                 {navItems.map((item) => {
                     const Icon = item.icon
-                    const isActive = activeScreen === item.id
+                    const isActive = currentActive === item.id
 
                     return (
                         <button

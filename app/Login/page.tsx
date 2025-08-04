@@ -1,24 +1,24 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
-import LoginHeader from "@/components/pages/login/LoginHeader"
 import LoginForm from "@/components/pages/login/LoginForm"
+import { useRouter } from "next/navigation"
 
-interface LoginScreenProps {
-    onLoginSuccess: () => void
-    onNavigateHome: () => void
-}
+export default function LoginScreen() {
+    const router = useRouter()
 
-export default function LoginScreen({ onLoginSuccess, onNavigateHome }: LoginScreenProps) {
+    const handleLoginSuccess = () => {
+        router.push("/") // Redirige al inicio después del login exitoso
+    }
+
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] p-4">
-            <Card className="w-full max-w-md mx-auto bg-white shadow-lg border-gray-100">
-                <LoginHeader />
+        <div className="min-h-screen flex items-center justify-center">
+            <Card className="w-full  mx-auto bg-white shadow-lg ">
                 <CardContent>
-                    <LoginForm onLoginSuccess={onLoginSuccess} onNavigateHome={onNavigateHome} />
+                    <LoginForm
+                        onLoginSuccess={handleLoginSuccess}
+                        onNavigateHome={() => router.push("/")}
+                    />
                 </CardContent>
             </Card>
         </div>

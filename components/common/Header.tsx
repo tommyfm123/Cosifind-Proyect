@@ -1,9 +1,6 @@
 "use client"
 
 import {
-  Search,
-  SlidersHorizontal,
-  ArrowLeft,
   Home,
   Heart,
   MapPin,
@@ -13,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button"
 import Logo from "@/components/common/Logo"
 import { useRouter } from "next/navigation"
+import { useAuth } from "@/context/AuthContext"
 import { motion } from "framer-motion"
 import ProductSearchBar from "@/components/common/product-search-bar"
 import { usePathname } from "next/navigation"
@@ -43,22 +41,29 @@ export default function Header({
   activeScreen,
   onScreenChange,
 }: HeaderProps) {
+  const { isLoggedIn, user, logout } = useAuth()
   const router = useRouter()
   const pathname = usePathname()
-  const navItems = [
-    { id: "home", icon: Home, label: "Inicio", path: "/" },
-    { id: "favorites", icon: Heart, label: "Favoritos", path: "/favorites" },
-    { id: "map", icon: MapPin, label: "Mapa", path: "/map" },
-    { id: "messages", icon: MessageCircle, label: "Mensajes", path: "/messages" },
-    { id: "profile", icon: User, label: "Perfil", path: "/profile" },
-  ]
+  const navItems = isLoggedIn
+    ? [
+      { id: "home", icon: Home, label: "Inicio", path: "/" },
+      { id: "favorites", icon: Heart, label: "Favoritos", path: "/favorites" },
+      { id: "map", icon: MapPin, label: "Mapa", path: "/map" },
+      { id: "messages", icon: MessageCircle, label: "Mensajes", path: "/messages" },
+      { id: "profile", icon: User, label: "Mi Perfil", path: "/profile" },
+    ]
+    : [
+      { id: "home", icon: Home, label: "Inicio", path: "/" },
+      { id: "map", icon: MapPin, label: "Mapa", path: "/map" },
+      { id: "profile", icon: User, label: "Iniciar sesión", path: "/login" },
+    ]
 
   const currentActive = navItems.find(item => pathname === item.path)?.id || "home"
 
 
   return (
     <div className="sticky top-0 z-50 backdrop-blur bg-white/80 shadow-sm border-b border-white/20 h-16 lg:h-20 px-4 lg:px-9">
-      <div className="py-2 sm:px-6 h-full flex items-center">
+      <div className="py-2 sm:px-6 h-full flex items-center justify-between">
         {/* Versión mobile: solo logo centrado */}
         <div className="flex lg:hidden w-full justify-center items-center h-full">
           <button onClick={() => router.push("/")}>
@@ -114,6 +119,20 @@ export default function Header({
             })}
           </ul>
         </div>
+        {isLoggedIn ? (
+          <Button variant="outline" size="sm" onClick={logout} className="ml-4">
+            Cerrar sesión
+          </Button>
+        ) : (
+          <Button
+            variant="default"
+            size="sm"
+            className="bg-black text-white ml-4"
+            onClick={() => router.push("/signup")}
+          >
+            Adherí tu comercio
+          </Button>
+        )}
       </div>
     </div>
   )

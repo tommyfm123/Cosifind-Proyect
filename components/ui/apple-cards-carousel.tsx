@@ -42,14 +42,14 @@ export function AppleCardsCarousel({ cards }: { cards: CardProps[] }) {
         <CarouselContext.Provider
             value={{ onCardClose: handleCardClose, currentIndex }}
         >
-            <div className="relative w-full max-w-full overflow-hidden pb-8 px-0">
+            <div className="relative w-full max-w-full overflow-hidden pb-4 md:pb-8 md:px-0">
 
                 {/* Contenedor flechas arriba, centrado horizontal */}
-                <div className="flex justify-end items-center mb-6 space-x-4">
+                <div className="flex justify-end items-center mb-6 space-x-4 md:flex">
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="custom-prev border border-gray-300 bg-white/80 backdrop-blur-sm shadow-md"
+                        className="custom-prev border border-gray-300 bg-white/80 backdrop-blur-sm shadow-md hidden md:block"
                         aria-label="Previous slide"
                     >
                         <ChevronLeft className="w-5 h-5" />
@@ -57,7 +57,7 @@ export function AppleCardsCarousel({ cards }: { cards: CardProps[] }) {
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="custom-next border border-gray-300 bg-white/80 backdrop-blur-sm shadow-md"
+                        className="custom-next border border-gray-300 bg-white/80 backdrop-blur-sm shadow-md hidden md:block"
                         aria-label="Next slide"
                     >
                         <ChevronRight className="w-5 h-5" />
@@ -78,7 +78,7 @@ export function AppleCardsCarousel({ cards }: { cards: CardProps[] }) {
                     modules={[Pagination, Navigation]}
                     onSlideChange={(swiper) => setCurrentIndex(swiper.activeIndex)}
                     breakpoints={{
-                        320: { slidesPerView: 1, spaceBetween: 10 },
+                        320: { slidesPerView: 1, spaceBetween: 20 },
                         640: { slidesPerView: 2, spaceBetween: 12 },
                         1024: { slidesPerView: 5, spaceBetween: 20 },
                     }}
@@ -126,10 +126,10 @@ export function AppleCardsCarousel({ cards }: { cards: CardProps[] }) {
     opacity: 1;
     margin: 0 0.25rem;
   }
-  .custom-pagination .swiper-pagination-bullet-active {
-    background: #3b82f6; /* bg-blue-500 */
+.custom-pagination .swiper-pagination-bullet-active {
+    background: #000 !important;
     opacity: 1;
-  }
+}
       `}</style>
         </CarouselContext.Provider>
     );

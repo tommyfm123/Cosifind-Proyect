@@ -16,7 +16,7 @@ interface ProductsSectionProps {
 export default function ProductsSection({ products, onShowAllProducts }: ProductsSectionProps) {
     const productsCarouselRef = useRef<HTMLDivElement>(null)
     const [currentIndex, setCurrentIndex] = useState(0)
-    const productsPerPage = 4
+    const productsPerPage = 5
     const totalPages = Math.ceil(products.length / productsPerPage)
 
     const next = () => {
@@ -32,11 +32,11 @@ export default function ProductsSection({ products, onShowAllProducts }: Product
     }
 
     return (
-        <div className="px-2 sm:px-4 md:px-8 lg:px-16 xl:px-32 py-8 sm:py-12 md:py-16 lg:py-20 bg-white">
+        <div className="px-4 py-8 sm:px-8 md:px-16 lg:px-32 bg-white">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 px-2 gap-4">
                 <div>
-                    <h2 className="text-2xl sm:text-4xl font-light text-[#1B2A41] mb-2 sm:mb-4">Productos destacados</h2>
-                    <p className="text-xs sm:text-base text-gray-600 mb-2 sm:mb-4">Los más populares cerca de ti</p>
+                    <h2 className="text-2xl sm:text-4xl font-light text-[#1B2A41] mb-2 sm:mb-4">Productos mas vistos</h2>
+                    <p className="text-xs sm:text-base text-gray-600 mb-2 sm:mb-4">Descubri los prodcuctos mas buscados cerca tuyo!</p>
                 </div>
                 <Button
                     variant="outline"
@@ -47,7 +47,7 @@ export default function ProductsSection({ products, onShowAllProducts }: Product
                     Ver todos
                 </Button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2">
                 {getCurrentProducts().map((product) => (
                     <div key={product.id} className="cursor-pointer" onClick={onShowAllProducts}>
                         <div className="relative m-2 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 shadow-md" onClick={onShowAllProducts}>

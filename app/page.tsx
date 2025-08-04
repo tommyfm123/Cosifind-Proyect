@@ -2,12 +2,12 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import HomeScreen from "@/app/Home/page"
+import HomeScreen from "@/app/home/page"
 import MapScreen from "@/app/map/page"
 import MessagesScreen from "@/app/messages/page"
 import ProfileScreen from "@/app/profile/page"
 import FavoritesScreen from "@/app/favorites/page"
-import LoginScreen from "@/app/Login/page"
+import LoginScreen from "@/app/login/page"
 import BottomNavigationBar from "@/components/navigation/BottomNavigationBar"
 
 export default function App() {
