@@ -120,7 +120,7 @@ export default function Header({
           </ul>
         </div>
         {isLoggedIn ? (
-          <Button variant="outline" size="sm" onClick={logout} className="ml-4">
+          <Button variant="outline" size="sm" onClick={() => { logout(); router.push('/'); router.refresh(); }} className="ml-4">
             Cerrar sesión
           </Button>
         ) : (
