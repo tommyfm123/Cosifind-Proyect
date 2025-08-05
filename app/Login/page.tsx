@@ -4,7 +4,12 @@ import { Card, CardContent } from "@/components/ui/card"
 import LoginForm from "@/components/pages/login/LoginForm"
 import { useRouter } from "next/navigation"
 
-export default function LoginScreen() {
+interface LoginScreenProps {
+    onLoginSuccess: () => void;
+    onNavigateHome: () => void;
+}
+
+export default function LoginScreen({ onLoginSuccess, onNavigateHome }: LoginScreenProps) {
     const router = useRouter()
 
     const handleLoginSuccess = () => {
