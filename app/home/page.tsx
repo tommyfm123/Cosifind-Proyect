@@ -3,11 +3,11 @@
 "use client"
 
 import React from "react"
-import CategoriesSection from "@/components/pages/home/CategoriesSection"
-import ProductsSection from "@/components/pages/home/ProductsSection"
-import HeroSection from "@/components/pages/home/HeroSection"
-import PromotionsSection from "@/components/pages/home/PromotionsSection"
-import CallToActionSection from "@/components/pages/home/CallToActionSection"
+import CategoriesSection from "@/components/pages/home/CategoriesSection";
+import ProductsSection from "@/components/pages/home/ProductsSection";
+import HeroSection from "@/components/pages/home/HeroSection";
+import PromotionsSection from "@/components/pages/home/PromotionsSection";
+import CallToActionSection from "@/components/pages/home/CallToActionSection";
 import { mockCategories, mockProducts } from "@/data/mockData"
 
 interface HomeScreenProps {
