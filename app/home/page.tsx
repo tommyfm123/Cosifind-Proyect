@@ -1,5 +1,3 @@
-// Archivo principal: HomeScreen.tsx
-
 "use client"
 
 import React from "react"
