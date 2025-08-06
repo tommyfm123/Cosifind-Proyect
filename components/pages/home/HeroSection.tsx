@@ -35,14 +35,14 @@ export default function HeroSection({ searchQuery, onSearchChange }: HeroSection
                 />
                 <div className="flex flex-wrap justify-center gap-4 mt-8">
                     <a
-                        href="#"
+                        href="https://play.google.com/store/games?hl=en&pli=1"
                         className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#0f172a] bg-white rounded-[10px] shadow sm:text-base"
                     >
                         <img src="/images/icons/android.png" alt="Android" className="w-5 h-5" />
                         Android
                     </a>
                     <a
-                        href="#"
+                        href="https://www.apple.com/la/app-store/"
                         className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#0f172a] bg-white rounded-[10px] shadow sm:text-base"
                     >
                         <img src="/images/icons/apple-logo.png" alt="Apple" className="w-5 h-5" />

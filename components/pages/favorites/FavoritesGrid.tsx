@@ -32,7 +32,7 @@ export default function FavoritesGrid({ favoriteProducts, removeFavorite, openPr
         )
     }
     return (
-        <div className="flex flex-wrap justify-center sm:gap-6">
+        <div className="flex flex-wrap justify-center lg:justify-start sm:gap-6">
             <AnimatePresence>
                 {favoriteProducts.map((product, index) => (
                     <motion.div
@@ -41,7 +41,7 @@ export default function FavoritesGrid({ favoriteProducts, removeFavorite, openPr
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.8 }}
                         transition={{ delay: index * 0.1 }}
-                        className="relative m-2 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
+                        className="relative m-2 flex w-full sm:max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
                     >
                         <a className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" href="#" onClick={(e) => { e.preventDefault(); openProductDetails(product) }}>
                             <img className="object-cover w-full h-full" src={product.image || "/placeholder.svg"} alt={product.name} />

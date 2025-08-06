@@ -5,6 +5,7 @@ import {
   Heart,
   MapPin,
   MessageCircle,
+  LogOut,
   User,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -14,7 +15,7 @@ import { useAuth } from "@/context/AuthContext"
 import { motion } from "framer-motion"
 import ProductSearchBar from "@/components/common/product-search-bar"
 import { usePathname } from "next/navigation"
-
+import { useState, useEffect } from "react"
 
 interface HeaderProps {
   searchQuery?: string
@@ -41,9 +42,10 @@ export default function Header({
   activeScreen,
   onScreenChange,
 }: HeaderProps) {
-  const { isLoggedIn, user, logout } = useAuth()
+  const { isLoggedIn, logout } = useAuth()
   const router = useRouter()
   const pathname = usePathname()
+
   const navItems = isLoggedIn
     ? [
       { id: "home", icon: Home, label: "Inicio", path: "/" },
@@ -60,31 +62,85 @@ export default function Header({
 
   const currentActive = navItems.find(item => pathname === item.path)?.id || "home"
 
+  const [isVisible, setIsVisible] = useState(true)
+  const [windowWidth, setWindowWidth] = useState(0)
+
+  useEffect(() => {
+    setWindowWidth(window.innerWidth)
+
+    let lastScrollY = window.pageYOffset || document.documentElement.scrollTop
+
+    const handleScroll = () => {
+      const currentScrollY = window.pageYOffset || document.documentElement.scrollTop
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        setIsVisible(false)
+      } else {
+        setIsVisible(true)
+      }
+      lastScrollY = currentScrollY
+    }
+
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth)
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    window.addEventListener("resize", handleResize)
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
 
   return (
-    <div className="sticky top-0 z-50 backdrop-blur bg-white/80 shadow-sm border-b border-white/20 h-16 lg:h-20 px-4 lg:px-9">
+    <motion.div
+      initial={{ y: 0 }}
+      animate={{ y: isVisible ? 0 : "-100%" }}
+      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      className="sticky top-0 z-50 backdrop-blur bg-white/80 shadow-sm border-b border-white/20 h-16 lg:h-20 px-4 lg:px-9"
+    >
       <div className="py-2 sm:px-6 h-full flex items-center justify-between">
-        {/* Versión mobile: solo logo centrado */}
-        <div className="flex lg:hidden w-full justify-center items-center h-full">
-          <button onClick={() => router.push("/")}>
-            <Logo size="sm" />
-          </button>
+        {/* Mobile: logo centrado y botón a la derecha */}
+        <div className="flex lg:hidden w-full items-center justify-between h-full">
+          <div className="w-1/3 flex justify-start" />
+          <div className="w-1/3 flex justify-center">
+            <button onClick={() => router.push("/")}>
+              <Logo size="sm" />
+            </button>
+          </div>
+          <div className="w-1/3 flex justify-end">
+            {isLoggedIn && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => {
+                  logout()
+                  router.push("/")
+                  router.refresh()
+                }}
+                className="text-slate-600"
+              >
+                <LogOut className="w-5 h-5" />
+              </Button>
+            )}
+          </div>
         </div>
-        {/* Versión desktop: menú completo */}
+
+        {/* Desktop: navegación completa */}
         <div className="hidden lg:flex items-center w-full h-full justify-between">
-          {/* Logo */}
           <div className="shrink-0">
             <button onClick={() => router.push("/")}>
               <Logo size="sm" />
             </button>
           </div>
-          {/* SearchBar SOLO si no estamos en "/" */}
+
           <div className="flex-1 h-full flex items-center mx-8">
             {currentActive !== "home" && (
               <ProductSearchBar className="w-full h-auto py-0 px-0 shadow-none" />
             )}
           </div>
-          {/* Navigation */}
+
           <ul className="flex items-center gap-4 shrink-0">
             {navItems.map((item) => {
               const Icon = item.icon
@@ -119,22 +175,21 @@ export default function Header({
             })}
           </ul>
         </div>
-        {isLoggedIn ? (
-          <Button variant="outline" size="sm" onClick={() => { logout(); router.push('/'); router.refresh(); }} className="ml-4">
-            Cerrar sesión
-          </Button>
-        ) : (
-          <Button
-            variant="default"
-            size="sm"
-            className="bg-dark text-white ml-4"
-            onClick={() => router.push("/signup")}
-          >
-            Adherí tu comercio
-          </Button>
+
+        {/* Botón extra (signup) si no está logueado (solo desktop) */}
+        {!isLoggedIn && (
+          <div className="hidden lg:block ml-4">
+            <Button
+              variant="default"
+              size="sm"
+              className="bg-dark text-white"
+              onClick={() => router.push("/signup")}
+            >
+              Adherí tu comercio
+            </Button>
+          </div>
         )}
       </div>
-    </div>
+    </motion.div>
   )
 }
-

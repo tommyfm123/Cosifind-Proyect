@@ -85,20 +85,19 @@ export default function BottomNavigationBar({
                                 router.push(item.path)
                             }}
                             className={`
-                flex flex-col items-center justify-center gap-1
-                p-2
-                text-[10px] font-medium
-                bg-transparent border-none outline-none ring-0 shadow-none
-                transition-none
-                ${isActive ? "text-blue-400" : "text-white"}
-              `}
+            flex flex-col items-center justify-center gap-0.5
+            p-1.5
+            text-[11px] font-medium leading-none
+            ${isActive ? "text-blue-400" : "text-white"}
+          `}
                         >
-                            <Icon className="w-4 h-4" />
-                            <span>{item.label}</span>
+                            <Icon className="w-5 h-5" />
+                            <span className="mt-[1px]">{item.label}</span>
                         </button>
                     )
                 })}
             </div>
         </motion.div>
+
     )
 }

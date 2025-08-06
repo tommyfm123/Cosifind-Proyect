@@ -42,14 +42,15 @@ export function AppleCardsCarousel({ cards }: { cards: CardProps[] }) {
         <CarouselContext.Provider
             value={{ onCardClose: handleCardClose, currentIndex }}
         >
-            <div className="relative w-full max-w-full overflow-hidden pb-4 md:pb-8 md:px-0">
+            <div className="relative w-full max-w-full overflow-hidden pb-0 md:pb-0 md:px-0">
 
                 {/* Contenedor flechas arriba, centrado horizontal */}
                 <div className="flex justify-end items-center mb-6 space-x-4 md:flex">
+
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="custom-prev border border-gray-300 bg-white/80 backdrop-blur-sm shadow-md hidden md:block"
+                        className="custom-prev flex items-center justify-center border border-gray-300 bg-white/80 backdrop-blur-sm shadow-md hidden sm:flex"
                         aria-label="Previous slide"
                     >
                         <ChevronLeft className="w-5 h-5" />
@@ -57,7 +58,7 @@ export function AppleCardsCarousel({ cards }: { cards: CardProps[] }) {
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="custom-next border border-gray-300 bg-white/80 backdrop-blur-sm shadow-md hidden md:block"
+                        className="custom-next flex items-center justify-center border border-gray-300 bg-white/80 backdrop-blur-sm shadow-md hidden sm:flex"
                         aria-label="Next slide"
                     >
                         <ChevronRight className="w-5 h-5" />
@@ -68,9 +69,9 @@ export function AppleCardsCarousel({ cards }: { cards: CardProps[] }) {
                     onSwiper={(swiper) => {
                         swiperRef.current = swiper;
                     }}
-                    slidesPerView="auto"
+                    slidesPerView={1} // Cambiado a dinámico con breakpoints
                     spaceBetween={20}
-                    pagination={{ clickable: true, el: ".custom-pagination" }}
+                    pagination={{ clickable: true }}
                     navigation={{
                         nextEl: ".custom-next",
                         prevEl: ".custom-prev",
@@ -80,17 +81,18 @@ export function AppleCardsCarousel({ cards }: { cards: CardProps[] }) {
                     breakpoints={{
                         320: { slidesPerView: 1, spaceBetween: 20 },
                         640: { slidesPerView: 2, spaceBetween: 12 },
-                        1024: { slidesPerView: 5, spaceBetween: 20 },
+                        1024: { slidesPerView: 3, spaceBetween: 20 },
+                        1440: { slidesPerView: 4, spaceBetween: 24 },
                     }}
                     centeredSlides={false}
-                    className="overflow-visible"
+                    className="overflow-visible relative"
                     style={{ paddingLeft: 0, paddingRight: 0 }}
                 >
                     {cards.map((card, index) => (
                         <SwiperSlide
                             key={index}
                             className="flex h-auto"
-                            style={{ width: "400px" }}
+                            style={{ width: "auto" }} // Ajuste dinámico
                         >
                             <Card card={card} />
                         </SwiperSlide>
@@ -98,39 +100,23 @@ export function AppleCardsCarousel({ cards }: { cards: CardProps[] }) {
                 </Swiper>
 
                 {/* Paginación */}
-                <div className="custom-pagination mt-8 flex justify-center space-x-2"></div>
+                <div className="swiper-pagination mt-8 relative z-10"></div>
 
             </div>
 
             <style jsx global>{`
-        .swiper-wrapper {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important;
+  .swiper-pagination {
+    position: relative !important;
+    margin-top: 2rem; /* mt-8 */
   }
-  .swiper-wrapper::-webkit-scrollbar {
-    display: none !important;
-  }
-  .swiper {
-    overflow: visible !important;
-  }
-  .custom-pagination .swiper-pagination-bullet {
-    width: 0.5rem; /* w-2 */
-    height: 0.5rem; /* h-2 */
-    border-radius: 9999px; /* rounded-full */
-    transition: background-color 0.3s, opacity 0.3s; /* transition-colors duration-300 */
-    background: #d1d5db; /* bg-gray-300 */
+  .swiper-pagination-bullet {
+    background: #d1d5db !important; /* Gris claro */
     opacity: 1;
-    margin: 0 0.25rem;
   }
-.custom-pagination .swiper-pagination-bullet-active {
-    background: #000 !important;
-    opacity: 1;
-}
-      `}</style>
+  .swiper-pagination-bullet-active {
+    background: #1b2a41 !important; /* bg-dark */
+  }
+`}</style>
         </CarouselContext.Provider>
     );
 }
@@ -149,8 +135,8 @@ function Card({ card }: { card: CardProps }) {
                 className="absolute inset-0 -z-10 rounded-3xl"
                 priority={false}
                 loading="lazy"
-                placeholder="blur"
-                blurDataURL="/placeholder.jpg"
+                placeholder={undefined}
+                blurDataURL={undefined}
             />
             <div className="pointer-events-none absolute inset-0 z-10 rounded-3xl bg-gradient-to-b from-black/50 via-transparent to-transparent" />
             <div className="relative z-20 p-6">

@@ -68,7 +68,7 @@ export default function ProductSearchBar({ className = "" }: ProductSearchBarPro
                 (loc) =>
                     loc.name.toLowerCase().includes(value.toLowerCase()) ||
                     loc.fullName.toLowerCase().includes(value.toLowerCase()),
-            )
+            ).slice(0, 5) // Limitar a 5 resultados
             setLocationSuggestions(filtered)
             setShowLocationSuggestions(true)
         } else {
@@ -139,8 +139,8 @@ export default function ProductSearchBar({ className = "" }: ProductSearchBarPro
         setProduct(value)
         if (value.length > 0) {
             const filtered = mockProducts.filter((prod) =>
-                prod.name.toLowerCase().includes(value.toLowerCase()),
-            )
+                prod.name.toLowerCase().startsWith(value.toLowerCase()),
+            ).slice(0, 5) // Limitar a 5 resultados
             setProductSuggestions(filtered)
             setShowProductSuggestions(true)
         } else {
@@ -192,13 +192,13 @@ export default function ProductSearchBar({ className = "" }: ProductSearchBarPro
 
                 {/* Campo de Producto */}
                 <div className="flex-1 flex flex-col justify-center px-4 py-2 md:px-6 md:py-0 text-left relative">
-                    <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide text-left">Producto</span>
+                    <span className="text-sm font-semibold text-gray-500 uppercase tracking-wide text-left md:text-md md:pb-0 pb-2">Producto</span>
                     <Input
                         type="text"
                         placeholder="¿Qué producto buscás?"
                         value={product}
                         onChange={(e) => handleProductChange(e.target.value)}
-                        className="border-0 p-0 rounded-none text-sm bg-white text-gray-900 placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0 h-auto text-left"
+                        className="border-0 p-0 rounded-none text-[10px] bg-white text-gray-900 placeholder:text-sm md:placeholder:text-md focus-visible:ring-0 focus-visible:ring-offset-0 h-auto text-left"
                         onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                     />
                     {showProductSuggestions && productSuggestions.length > 0 && (
@@ -221,18 +221,18 @@ export default function ProductSearchBar({ className = "" }: ProductSearchBarPro
 
                 {/* Campo de Ubicación */}
                 <div className="flex-1 flex flex-col justify-center px-4 py-2 relative md:px-6 md:py-0 text-left">
-                    <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide text-left">Ubicación</span>
+                    <div className="flex items-center justify-between  ">
+                        <span className="text-sm font-semibold text-gray-500 uppercase tracking-wide text-left md:text-md md:pb-0 pb-2">Ubicación</span>
                         <Button
                             type="button"
                             variant="ghost"
                             size="sm"
                             onClick={getCurrentLocation}
                             disabled={isGettingLocation}
-                            className="h-5 px-1 flex items-center justify-center text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-full"
+                            className="h-5 px-1 flex items-center justify-center  text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-full"
                         >
                             {isGettingLocation ? <Loader2 className="h-3.5 w-3.5" /> : <MapPin className="h-3.5 w-3.5" />}
-                            <span className="ml-1 text-[10px] font-semibold whitespace-nowrap">Obtener ubicación</span>
+                            <span className=" text-[10px] font-semibold whitespace-nowrap">Obtener ubicación</span>
                         </Button>
                     </div>
                     <Input
@@ -243,7 +243,7 @@ export default function ProductSearchBar({ className = "" }: ProductSearchBarPro
                         onChange={(e) => handleLocationChange(e.target.value)}
                         onFocus={() => location.length > 0 && setShowLocationSuggestions(true)}
                         onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                        className="border-0 rounded-none p-0 bg-white text-sm text-gray-900 placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0 h-auto text-left"
+                        className="border-0 p-0 rounded-none text-[10px] bg-white text-gray-900 placeholder:text-sm md:placeholder:text-md focus-visible:ring-0 focus-visible:ring-offset-0 h-auto text-left"
                     />
 
                     {/* Sugerencias de Ubicación */}
