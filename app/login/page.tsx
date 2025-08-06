@@ -17,8 +17,8 @@ export default function LoginScreen({ onLoginSuccess, onNavigateHome }: LoginScr
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center">
-            <Card className="w-full  mx-auto bg-white shadow-lg ">
+        <div className="min-h-screen flex items-center justify-center ">
+            <Card className="w-full  mx-auto bg-white shadow-lg  ">
                 <CardContent>
                     <LoginForm
                         onLoginSuccess={handleLoginSuccess}

@@ -37,7 +37,7 @@ export default function LoginForm({ onLoginSuccess, onNavigateHome }: LoginFormP
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-900 text-gray-100">
+        <div className="min-h-screen flex items-center justify-center bg-gray-900 text-gray-100 px-4">
             <div className="w-full max-w-md space-y-8">
 
                 <div className="text-center">
