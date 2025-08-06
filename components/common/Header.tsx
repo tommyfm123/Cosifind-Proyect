@@ -1,13 +1,6 @@
 "use client"
 
-import {
-  Home,
-  Heart,
-  MapPin,
-  MessageCircle,
-  LogOut,
-  User,
-} from "lucide-react"
+import { LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Logo from "@/components/common/Logo"
 import { useRouter } from "next/navigation"
@@ -16,6 +9,7 @@ import { motion } from "framer-motion"
 import ProductSearchBar from "@/components/common/product-search-bar"
 import { usePathname } from "next/navigation"
 import { useState, useEffect } from "react"
+import { authNavItems, getGuestNavItems } from "@/components/navigation/nav-items"
 
 interface HeaderProps {
   searchQuery?: string
@@ -46,19 +40,7 @@ export default function Header({
   const router = useRouter()
   const pathname = usePathname()
 
-  const navItems = isLoggedIn
-    ? [
-      { id: "home", icon: Home, label: "Inicio", path: "/" },
-      { id: "favorites", icon: Heart, label: "Favoritos", path: "/favorites" },
-      { id: "map", icon: MapPin, label: "Mapa", path: "/map" },
-      { id: "messages", icon: MessageCircle, label: "Mensajes", path: "/messages" },
-      { id: "profile", icon: User, label: "Mi Perfil", path: "/profile" },
-    ]
-    : [
-      { id: "home", icon: Home, label: "Inicio", path: "/" },
-      { id: "map", icon: MapPin, label: "Mapa", path: "/map" },
-      { id: "profile", icon: User, label: "Iniciar sesión", path: "/login" },
-    ]
+  const navItems = isLoggedIn ? authNavItems : getGuestNavItems("Iniciar sesión")
 
   const currentActive = navItems.find(item => pathname === item.path)?.id || "home"
 
