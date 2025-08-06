@@ -46,6 +46,7 @@ export default function Header({
 
   const [isVisible, setIsVisible] = useState(true)
   const [windowWidth, setWindowWidth] = useState(0)
+  const [isCompact, setIsCompact] = useState(false)
 
   useEffect(() => {
     setWindowWidth(window.innerWidth)
@@ -64,6 +65,7 @@ export default function Header({
 
     const handleResize = () => {
       setWindowWidth(window.innerWidth)
+      setIsCompact(window.innerWidth < 768) // Compactar si el ancho es menor a 768px
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true })
@@ -159,7 +161,7 @@ export default function Header({
         </div>
 
         {/* Botón extra (signup) si no está logueado (solo desktop) */}
-        {!isLoggedIn && (
+        {!isLoggedIn && !isCompact && (
           <div className="hidden lg:block ml-4">
             <Button
               variant="default"
