@@ -29,12 +29,12 @@ export default function BottomNavigationBar({
             { id: "favorites", icon: Heart, label: "Favoritos", path: "/favorites" },
             { id: "map", icon: MapPin, label: "Mapa", path: "/map" },
             { id: "messages", icon: MessageCircle, label: "Mensajes", path: "/messages" },
-            { id: "profile", icon: User, label: "Mi Perfil", path: "/profile" },
+            { id: "profile", icon: User, label: "Perfil ", path: "/profile" },
         ]
         : [
             { id: "home", icon: Home, label: "Inicio", path: "/" },
             { id: "map", icon: MapPin, label: "Mapa", path: "/map" },
-            { id: "profile", icon: User, label: "Iniciar sesión", path: "/login" },
+            { id: "profile", icon: User, label: "Acceso", path: "/login" },
         ]
 
     const currentActive = navItems.find((item) => pathname === item.path)?.id || "home"
@@ -92,7 +92,7 @@ export default function BottomNavigationBar({
           `}
                         >
                             <Icon className="w-5 h-5" />
-                            <span className="mt-[1px]">{item.label}</span>
+                            <span className="mt-[1px] truncate w-full text-center">{item.label}</span>
                         </button>
                     )
                 })}
