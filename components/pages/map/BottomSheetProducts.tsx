@@ -89,7 +89,7 @@ export default function BottomSheetProducts({
                     </motion.div>
                 )}
             </div>
-            <div className="overflow-y-auto px-4 pb-6" style={{ maxHeight: "calc(80vh - 64px)" }}>
+            <div className="overflow-y-auto px-4 pb-6 md:pb-4" style={{ maxHeight: "calc(80vh - 64px)", paddingBottom: "calc(env(safe-area-inset-bottom) + 64px)" }}>
                 <h3 className="font-semibold text-lg mb-4 text-[#2D3844]">
                     {selectedCategory ? `Productos de ${selectedCategory}` : "Productos encontrados"}
                 </h3>
