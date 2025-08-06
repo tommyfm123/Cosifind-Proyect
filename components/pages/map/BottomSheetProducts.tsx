@@ -4,6 +4,7 @@ import { Heart, SortAsc, Star } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { mockProducts } from "@/data/mockData"
+import { useEffect } from "react"
 
 interface BottomSheetProductsProps {
     bottomSheetRef: React.RefObject<HTMLDivElement | null>
@@ -42,10 +43,22 @@ export default function BottomSheetProducts({
     openProductModal,
     selectedCategory,
 }: BottomSheetProductsProps) {
+    // Bloquear el scroll de la página cuando el bottom sheet está expandido
+    useEffect(() => {
+        if (isBottomSheetExpanded) {
+            document.body.style.overflow = "hidden"
+        } else {
+            document.body.style.overflow = ""
+        }
+        return () => {
+            document.body.style.overflow = ""
+        }
+    }, [isBottomSheetExpanded])
+
     return (
         <motion.div
             ref={bottomSheetRef}
-            className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-2xl flex flex-col"
+            className="fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-2xl flex flex-col"
             initial={{ y: "70%" }}
             animate={{ y: isBottomSheetExpanded ? "10%" : "70%" }}
             transition={{ type: "spring", damping: 12, stiffness: 80, mass: 0.7, velocity: 2 }}

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 import './globals.css'
 import ClientRootLayout from '@/app/ClientRootLayout'
-import Footer from '@/components/common/Footer'
+import ConditionalFooter from '@/components/common/ConditionalFooter'
 import { AuthProvider } from '@/context/AuthContext'
 
 const poppins = Poppins({
@@ -29,7 +29,7 @@ export default function RootLayout({
         <AuthProvider>
           <ClientRootLayout>{children}</ClientRootLayout>
         </AuthProvider>
-        <Footer />
+        <ConditionalFooter />
       </body>
     </html>
   )

@@ -40,9 +40,9 @@ export default function LoginForm({ onLoginSuccess, onNavigateHome }: LoginFormP
         <div className="min-h-screen flex items-center justify-center bg-gray-900 text-gray-100 px-4">
             <div className="w-full max-w-md space-y-8">
 
-                <div className="text-center">
-                    <h2 className="text-4xl font-bold tracking-tight">Iniciar Sesion</h2>
-                    <p className="mt-2 text-sm text-gray-400">Accede a tu cuenta</p>
+                <div className="text-center space-y-1">
+                    <h2 className="text-2xl font-bold tracking-tight md:text-4xl">Iniciar Sesion</h2>
+                    <p className="text-sm text-gray-400 md:mt-2">Accede a tu cuenta</p>
                 </div>
                 <form onSubmit={handleLogin} className="space-y-6">
                     <div className="space-y-2">

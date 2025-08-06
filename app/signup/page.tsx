@@ -37,7 +37,7 @@ export default function SignUpForm() {
 
     // Ajustando el diseño del formulario para ser responsive first
     return (
-        <div className="w-full h-[80vh] sm:min-h-screen flex flex-col items-center bg-gray-900 text-gray-100 px-4 sm:px-6 lg:px-8 pt-6 overflow-x-hidden">
+        <div className="w-full h-screen flex items-center justify-center bg-gray-900 text-gray-100 px-4 sm:px-6 lg:px-8 overflow-x-hidden relative -mt-20">
             <div className="w-full max-w-sm sm:max-w-md">
                 <div className="text-center mb-6">
                     <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Crear una cuenta</h2>
@@ -141,8 +141,5 @@ export default function SignUpForm() {
                 </p>
             </div>
         </div>
-
-
-
     );
 }
