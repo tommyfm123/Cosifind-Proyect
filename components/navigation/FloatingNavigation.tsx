@@ -2,8 +2,8 @@
 
 import { useRouter, usePathname } from 'next/navigation'
 import { motion } from "framer-motion"
-import { Home, Heart, MapPin, MessageCircle, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { authNavItems } from "./nav-items"
 
 interface FloatingNavigationProps {
   activeScreen: string
@@ -22,13 +22,7 @@ export default function FloatingNavigation({
     return null
   }
 
-  const navItems = [
-    { id: "home", icon: Home, label: "Inicio", path: "/" },
-    { id: "favorites", icon: Heart, label: "Favoritos", path: "/favorites" },
-    { id: "map", icon: MapPin, label: "Mapa", path: "/map" },
-    { id: "messages", icon: MessageCircle, label: "Mensajes", path: "/messages" },
-    { id: "profile", icon: User, label: "Perfil", path: "/profile" },
-  ]
+  const navItems = authNavItems
 
   const handleClick = (id: string, path: string) => {
     onScreenChange(id)

@@ -3,8 +3,8 @@
 import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import { useRouter, usePathname } from "next/navigation"
-import { Home, Heart, MapPin, MessageCircle, User } from "lucide-react"
 import { useAuth } from "@/context/AuthContext"
+import { authNavItems, getGuestNavItems } from "./nav-items"
 
 interface BottomNavigationBarProps {
     activeScreen: string
@@ -23,19 +23,7 @@ export default function BottomNavigationBar({
     const [hidden, setHidden] = useState(false)
     const [lastScrollY, setLastScrollY] = useState(0)
 
-    const navItems = isLoggedIn
-        ? [
-            { id: "home", icon: Home, label: "Inicio", path: "/" },
-            { id: "favorites", icon: Heart, label: "Favoritos", path: "/favorites" },
-            { id: "map", icon: MapPin, label: "Mapa", path: "/map" },
-            { id: "messages", icon: MessageCircle, label: "Mensajes", path: "/messages" },
-            { id: "profile", icon: User, label: "Perfil ", path: "/profile" },
-        ]
-        : [
-            { id: "home", icon: Home, label: "Inicio", path: "/" },
-            { id: "map", icon: MapPin, label: "Mapa", path: "/map" },
-            { id: "profile", icon: User, label: "Acceso", path: "/login" },
-        ]
+    const navItems = isLoggedIn ? authNavItems : getGuestNavItems()
 
     const currentActive = navItems.find((item) => pathname === item.path)?.id || "home"
 
