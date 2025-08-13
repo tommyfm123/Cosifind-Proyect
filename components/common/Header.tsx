@@ -85,15 +85,24 @@ export default function Header({
       className="sticky top-0 z-50 backdrop-blur bg-white/80 shadow-sm border-b border-white/20 h-16 lg:h-20 px-4 lg:px-9"
     >
       <div className="py-2 sm:px-6 h-full flex items-center justify-between">
-        {/* Mobile: logo centrado y botón a la derecha */}
-        <div className="flex lg:hidden w-full items-center justify-between h-full">
-          <div className="w-1/3 flex justify-start" />
-          <div className="w-1/3 flex justify-center">
+        {/* Mobile: logo a la izquierda y botón 'Adherí tu comercio' a la derecha */}
+        <div className="flex lg:hidden w-full items-center justify-between h-full px-2">
+          <div className="flex items-center justify-start">
             <button onClick={() => router.push("/")}>
               <Logo size="sm" />
             </button>
           </div>
-          <div className="w-1/3 flex justify-end">
+          <div className="flex items-center justify-end gap-2">
+            {!isLoggedIn && (
+              <Button
+                variant="default"
+                size="sm"
+                className="bg-dark text-white"
+                onClick={() => router.push("/signup")}
+              >
+                Adherí tu comercio
+              </Button>
+            )}
             {isLoggedIn && (
               <Button
                 variant="ghost"
